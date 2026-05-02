@@ -1,5 +1,5 @@
 {
-  "name": "rwanda-province-district-sector-cell-village---in-rwanda",
+  "name": "@derrick63/rwanda-admin-hierarchy",
   "version": "1.0.0",
   "description": "Rwanda administrative hierarchy API and dataset",
   "main": "src/index.js",
@@ -29,7 +29,7 @@
     "village",
     "geodata"
   ],
-  "author": "Derrick MUGISHA",
+  "author": "derrickmugisha",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {

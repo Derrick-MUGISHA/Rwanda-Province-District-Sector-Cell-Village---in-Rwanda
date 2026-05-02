@@ -36,7 +36,7 @@ npm pack
 ```
 
 Output package:
-- `rwanda-province-district-sector-cell-village---in-rwanda-1.0.0.tgz`
+- `derrickmugisha-rwanda-admin-hierarchy-1.0.0.tgz`
 
 ### Publish to npm
 
