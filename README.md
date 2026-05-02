@@ -105,6 +105,33 @@ Default server URL:
 
 `GET /api/cells/:cellId/villages`
 
+## Use as a Package
+
+This repository can also be used as a Node package (CommonJS).
+
+Example usage:
+
+```js
+const {
+  getDataset,
+  getProvinces,
+  getDistrictsByProvinceId,
+} = require("rwanda-province-district-sector-cell-village---in-rwanda");
+
+const dataset = getDataset();
+const provinces = getProvinces();
+const districts = getDistrictsByProvinceId("province-umujyi-wa-kigali");
+```
+
+Exported package functions:
+- `getDataset()`
+- `getProvinces()`
+- `getDistrictsByProvinceId(provinceId)`
+- `getSectorsByDistrictId(districtId)`
+- `getCellsBySectorId(sectorId)`
+- `getVillagesByCellId(cellId)`
+- `loadDataset()`
+
 ## Quick Usage Examples
 
 Get all provinces:
@@ -169,3 +196,4 @@ This allows:
 
 - If you update the PDF, run `npm run build:data` again.
 - Then always run `npm run validate:data` before starting the server.
+- Before publishing or releasing, run `npm run validate:data`.

@@ -2,18 +2,34 @@
   "name": "rwanda-province-district-sector-cell-village---in-rwanda",
   "version": "1.0.0",
   "description": "Rwanda administrative hierarchy API and dataset",
-  "main": "src/server.js",
+  "main": "src/index.js",
+  "files": [
+    "data",
+    "src",
+    "README.md",
+    "TECHNICAL_DOCUMENTATION.md"
+  ],
   "scripts": {
     "build:data": "python3 scripts/build-json-from-pdf.py",
     "start": "node src/server.js",
-    "validate:data": "node scripts/validate-data.js"
+    "validate:data": "node scripts/validate-data.js",
+    "prepack": "npm run validate:data"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "rwanda",
+    "administrative-data",
+    "province",
+    "district",
+    "sector",
+    "cell",
+    "village",
+    "geodata"
+  ],
+  "author": "Derrick MUGISHA",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
