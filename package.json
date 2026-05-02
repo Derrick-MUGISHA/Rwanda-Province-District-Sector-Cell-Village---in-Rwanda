@@ -1,0 +1,26 @@
+{
+  "name": "rwanda-province-district-sector-cell-village---in-rwanda",
+  "version": "1.0.0",
+  "description": "Rwanda administrative hierarchy API and dataset",
+  "main": "src/server.js",
+  "scripts": {
+    "build:data": "python3 scripts/build-json-from-pdf.py",
+    "start": "node src/server.js",
+    "validate:data": "node scripts/validate-data.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda/issues"
+  },
+  "homepage": "https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
