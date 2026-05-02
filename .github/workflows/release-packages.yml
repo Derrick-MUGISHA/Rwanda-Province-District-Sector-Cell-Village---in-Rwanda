@@ -1,0 +1,103 @@
+name: Release Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (example: 1.1.0)"
+        required: true
+        type: string
+      publish_npm:
+        description: "Publish npm package"
+        required: true
+        default: true
+        type: boolean
+      publish_python:
+        description: "Publish Python package"
+        required: true
+        default: true
+        type: boolean
+      publish_maven:
+        description: "Publish Maven package"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+  packages: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  npm:
+    if: ${{ inputs.publish_npm }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+          cache: npm
+      - run: npm ci
+      - run: npm run validate:data
+      - run: npm version ${{ inputs.version }} --no-git-tag-version
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  python:
+    if: ${{ inputs.publish_python }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install --upgrade build twine
+      - run: python -m build python
+      - run: python -m twine check python/dist/*
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: python/dist/
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+
+  maven:
+    if: ${{ inputs.publish_maven }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+          server-id: github
+          server-username: GITHUB_ACTOR
+          server-password: GITHUB_TOKEN
+      - run: mvn -f java-mvn/pom.xml -B -Drevision=${{ inputs.version }} clean deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release:
+    needs: [npm, python, maven]
+    if: ${{ always() && (needs.npm.result == 'success' || needs.npm.result == 'skipped') && (needs.python.result == 'success' || needs.python.result == 'skipped') && (needs.maven.result == 'success' || needs.maven.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create git tag
+        run: |
+          git tag v${{ inputs.version }}
+          git push origin v${{ inputs.version }}
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.version }}
+          name: v${{ inputs.version }}
+          generate_release_notes: true

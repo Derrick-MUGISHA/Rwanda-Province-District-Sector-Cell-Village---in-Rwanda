@@ -34,6 +34,26 @@ No external assumptions are required to run or use this project.
 - npm
 - `pdftotext` installed (used by the build script)
 - Java 17+ and Maven (only if you want the Java package)
+- Python 3.9+ (only if you want the Python package)
+
+## Environment Configuration
+
+This project uses environment variables for secure runtime behavior.
+
+1) Copy the template:
+
+```bash
+cp .env.example .env
+```
+
+2) Edit `.env` for your environment.
+
+Important variables:
+- `PORT`
+- `ENABLE_FULL_DATASET_ENDPOINT`
+- `RATE_LIMIT_MAX_REQUESTS`
+- `RATE_LIMIT_WINDOW_MS`
+- `ALLOWED_ORIGINS`
 
 ## How to Run (Step by Step)
 
@@ -209,6 +229,18 @@ from rwanda_admin_hierarchy import get_provinces, get_districts_by_province_id
 provinces = get_provinces()
 districts = get_districts_by_province_id("province-umujyi-wa-kigali")
 ```
+
+## CI/CD Pipelines
+
+GitHub Actions workflows are included:
+
+- `.github/workflows/ci-security.yml`
+  - Optimized checks with dependency caching for Node, Python, and Maven
+  - Builds all package targets
+  - Runs dependency audits (`npm audit`, `pip-audit`)
+- `.github/workflows/release-packages.yml`
+  - Manual release pipeline for npm, PyPI, and Maven
+  - Creates git tag and GitHub Release automatically after publish
 
 ## Quick Usage Examples
 

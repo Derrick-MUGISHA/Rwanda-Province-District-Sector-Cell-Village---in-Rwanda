@@ -12,6 +12,18 @@ The dataset and hierarchy behavior are based on:
 - `Guidence.md`
 - `List_of_Villages_for_all_technology.pdf`
 
+## Environment and Secrets
+
+Use:
+- `.env.example` as the public template
+- local `.env` for runtime values
+
+For CI/CD release, define GitHub Actions secrets:
+- `NPM_TOKEN`
+- `PYPI_API_TOKEN`
+- `MAVEN_USERNAME` (optional, if not using `GITHUB_TOKEN`)
+- `MAVEN_PASSWORD` (optional, if not using `GITHUB_TOKEN`)
+
 ## 1) Node.js Package (npm)
 
 ### Build and validate
@@ -91,9 +103,20 @@ python3 -m twine upload python/dist/*
    - `npm run validate:data`
 2. Build all package artifacts (npm, Maven, Python)
 3. Publish packages
-4. Create git tag and GitHub release notes
+4. Run GitHub release pipeline (`release-packages.yml`)
+5. Confirm git tag and GitHub release notes were created
 
-## 5) Release Checklist
+## 5) GitHub Actions Pipelines
+
+- `ci-security.yml`
+  - Parallelized package builds for Node, Java, Python
+  - Uses dependency cache for faster runs
+  - Runs dependency audits
+- `release-packages.yml`
+  - Manual release workflow for npm, PyPI, and Maven
+  - Creates version tag and GitHub release
+
+## 6) Release Checklist
 
 - [ ] Dataset rebuilt from source PDF
 - [ ] Dataset integrity validation passes

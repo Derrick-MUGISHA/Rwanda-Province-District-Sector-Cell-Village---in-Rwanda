@@ -5,6 +5,16 @@ const DATA_FILE = path.join(__dirname, "..", "data", "rwanda-administrative.json
 
 let cache = null;
 
+function deepFreeze(value) {
+  if (value && typeof value === "object" && !Object.isFrozen(value)) {
+    Object.freeze(value);
+    for (const key of Object.keys(value)) {
+      deepFreeze(value[key]);
+    }
+  }
+  return value;
+}
+
 function loadDataset() {
   if (cache) {
     return cache;
@@ -36,7 +46,7 @@ function loadDataset() {
     }
   }
 
-  cache = { dataset, index };
+  cache = { dataset: deepFreeze(dataset), index };
   return cache;
 }
 

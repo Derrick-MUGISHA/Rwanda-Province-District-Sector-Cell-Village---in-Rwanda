@@ -5,16 +5,25 @@
 
   <groupId>io.github.derickmugisha</groupId>
   <artifactId>rwanda-admin-hierarchy</artifactId>
-  <version>1.0.0</version>
+  <version>${revision}</version>
   <name>Rwanda Administrative Hierarchy</name>
   <description>Rwanda Province-District-Sector-Cell-Village dataset and Java access library.</description>
   <packaging>jar</packaging>
 
   <properties>
+    <revision>1.0.0</revision>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda</url>
+    </repository>
+  </distributionManagement>
 
   <dependencies>
     <dependency>

@@ -2,3 +2,8 @@ node_modules/
 *.tgz
 java-mvn/target/
 .m2repo/
+.env
+.venv/
+python/dist/
+python/build/
+python/*.egg-info/
