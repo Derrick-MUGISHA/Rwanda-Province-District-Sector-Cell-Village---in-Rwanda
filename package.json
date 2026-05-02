@@ -10,7 +10,7 @@
     "TECHNICAL_DOCUMENTATION.md"
   ],
   "scripts": {
-    "build:data": "python3 scripts/build-json-from-pdf.py",
+    "build:data": "node scripts/build-json-from-pdf.js",
     "start": "node src/server.js",
     "validate:data": "node scripts/validate-data.js",
     "prepack": "npm run validate:data"

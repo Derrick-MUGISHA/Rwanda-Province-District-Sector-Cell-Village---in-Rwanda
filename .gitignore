@@ -1,2 +1,4 @@
 node_modules/
 *.tgz
+java-mvn/target/
+.m2repo/

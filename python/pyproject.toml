@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rwanda-admin-hierarchy"
+version = "1.0.0"
+description = "Rwanda administrative hierarchy dataset and query helpers."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "ISC"
+authors = [
+  { name = "Derrick MUGISHA" }
+]
+keywords = ["rwanda", "administrative", "province", "district", "sector", "cell", "village"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent"
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["rwanda_admin_hierarchy*"]
+
+[tool.setuptools.package-data]
+rwanda_admin_hierarchy = ["rwanda_administrative.json"]

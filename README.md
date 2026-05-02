@@ -32,8 +32,8 @@ No external assumptions are required to run or use this project.
 
 - Node.js (recommended: version 18+)
 - npm
-- Python 3
 - `pdftotext` installed (used by the build script)
+- Java 17+ and Maven (only if you want the Java package)
 
 ## How to Run (Step by Step)
 
@@ -131,6 +131,84 @@ Exported package functions:
 - `getCellsBySectorId(sectorId)`
 - `getVillagesByCellId(cellId)`
 - `loadDataset()`
+
+Build npm tarball locally:
+
+```bash
+npm pack
+```
+
+## Use as a Maven Package (Java)
+
+The Java package is in `java-mvn`.
+
+### Build the JAR
+
+```bash
+mvn -f java-mvn/pom.xml clean package
+```
+
+The JAR will be created in:
+
+`java-mvn/target/rwanda-admin-hierarchy-1.0.0.jar`
+
+### Install to your local Maven repository
+
+```bash
+mvn -f java-mvn/pom.xml clean install
+```
+
+### Add dependency in your Java app
+
+```xml
+<dependency>
+  <groupId>io.github.derickmugisha</groupId>
+  <artifactId>rwanda-admin-hierarchy</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+
+### Java usage example
+
+```java
+import io.github.derickmugisha.rwanda.RwandaHierarchyService;
+
+RwandaHierarchyService service = RwandaHierarchyService.loadDefault();
+var provinces = service.getProvinces();
+var districts = service.getDistrictsByProvinceId("province-umujyi-wa-kigali");
+```
+
+## Use as a Python Package
+
+Python package path:
+
+`python/`
+
+### Build Python distributions
+
+```bash
+python3 -m pip install --upgrade build
+python3 -m build python
+```
+
+Build output:
+
+`python/dist/`
+
+### Install locally for testing
+
+```bash
+python3 -m pip install python/dist/*.whl
+```
+
+### Python usage example
+
+```python
+from rwanda_admin_hierarchy import get_provinces, get_districts_by_province_id
+
+provinces = get_provinces()
+districts = get_districts_by_province_id("province-umujyi-wa-kigali")
+```
 
 ## Quick Usage Examples
 
