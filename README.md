@@ -21,7 +21,7 @@ No external assumptions are required to run or use this project.
   Express API server with endpoints by hierarchy level.
 - `src/data-store.js`  
   Loads and caches JSON once in memory.
-- `scripts/build-json-from-pdf.py`  
+- `scripts/build-json-from-pdf.js`  
   Rebuilds JSON dataset from the provided PDF.
 - `scripts/validate-data.js`  
   Checks integrity rules (IDs, structure, duplicates within level).
@@ -136,7 +136,7 @@ const {
   getDataset,
   getProvinces,
   getDistrictsByProvinceId,
-} = require("rwanda-province-district-sector-cell-village---in-rwanda");
+} = require("@derrickmugisha/rwanda-admin-hierarchy");
 
 const dataset = getDataset();
 const provinces = getProvinces();
