@@ -1,8 +1,21 @@
 # Rwanda Administrative Hierarchy API
 
+[![npm version](https://img.shields.io/npm/v/@derrick63/rwanda-admin-hierarchy)](https://www.npmjs.com/package/@derrick63/rwanda-admin-hierarchy)
+[![license](https://img.shields.io/badge/license-ISC-blue.svg)](./LICENSE)
+
 This project provides a structured dataset and API for Rwanda administrative levels:
 
 `Country -> Province -> District -> Sector -> Cell -> Village`
+
+## Install
+
+```bash
+npm install @derrick63/rwanda-admin-hierarchy
+```
+
+The published package is a **zero-dependency** data library with bundled TypeScript
+type definitions. The Express API server described below is a development/deployment
+extra and its dependencies are only installed when working inside this repository.
 
 ## Information Source
 
@@ -54,6 +67,10 @@ Important variables:
 - `RATE_LIMIT_MAX_REQUESTS`
 - `RATE_LIMIT_WINDOW_MS`
 - `ALLOWED_ORIGINS`
+- `TRUST_PROXY` (set when running behind a reverse proxy so rate limiting sees real client IPs)
+
+Never store publishing tokens (npm, PyPI, Maven) in `.env`. Use GitHub Actions
+secrets for CI releases and `npm login` for local publishing.
 
 ## How to Run (Step by Step)
 
@@ -136,7 +153,7 @@ const {
   getDataset,
   getProvinces,
   getDistrictsByProvinceId,
-} = require("@derrickmugisha/rwanda-admin-hierarchy");
+} = require("@derrick63/rwanda-admin-hierarchy");
 
 const dataset = getDataset();
 const provinces = getProvinces();
@@ -151,6 +168,15 @@ Exported package functions:
 - `getCellsBySectorId(sectorId)`
 - `getVillagesByCellId(cellId)`
 - `loadDataset()`
+
+TypeScript definitions are bundled (`src/index.d.ts`), so all functions and the
+dataset shape are fully typed out of the box.
+
+The raw JSON dataset can also be imported directly:
+
+```js
+const dataset = require("@derrick63/rwanda-admin-hierarchy/data");
+```
 
 Build npm tarball locally:
 
