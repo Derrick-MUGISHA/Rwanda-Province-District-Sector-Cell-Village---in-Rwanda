@@ -242,6 +242,33 @@ Provenance and migrations:
 - `resolveId(oldId)` — resolves ids from previous dataset versions via the migration map
 - `getIdChanges()` — the raw migration history (`data/changes.json`)
 
+### Use in React (or any browser bundler)
+
+The lookup API is bundler-friendly: it has no Node-only dependencies, so the
+same package works in React, Vue, Svelte or plain browser apps built with
+Vite, webpack or Next.js. TypeScript definitions ship with the package.
+
+```jsx
+import { getProvinces, getDistrictsByProvinceId, search } from "@derrick63/rwanda-admin-hierarchy";
+
+function ProvincePicker({ onSelect }) {
+  return (
+    <select onChange={(e) => onSelect(getDistrictsByProvinceId(e.target.value))}>
+      {getProvinces().map((p) => (
+        <option key={p.id} value={p.id}>{p.name}</option>
+      ))}
+    </select>
+  );
+}
+```
+
+Bundle-size note: importing the API inlines the full dataset (~3.1 MB raw,
+~340 KB gzipped over the wire). If that is too heavy for your app, either
+lazy-load your route with `React.lazy`/dynamic `import()`, import only the
+per-province JSON you need (`@derrick63/rwanda-admin-hierarchy/data/provinces/umujyi-wa-kigali.json`),
+or keep the package on the server and expose it through the bundled Express
+API (`npm start`) or your own backend.
+
 ### Standard codes
 
 Every node carries a `code` field with its official NISR administrative code,

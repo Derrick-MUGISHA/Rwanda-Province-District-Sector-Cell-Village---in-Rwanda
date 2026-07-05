@@ -1,8 +1,3 @@
-const fs = require("fs");
-const path = require("path");
-
-const DATA_FILE = path.join(__dirname, "..", "data", "rwanda-administrative.json");
-
 const LEVELS = ["province", "district", "sector", "cell", "village"];
 
 // NISR numeric code lengths per level. A village id such as village-11010103
@@ -74,8 +69,11 @@ function loadDataset() {
     return cache;
   }
 
-  const raw = fs.readFileSync(DATA_FILE, "utf8");
-  const dataset = JSON.parse(raw);
+  // require() instead of fs so bundlers (Vite, webpack, Next.js) can inline
+  // the dataset and the API works in browsers as well as Node. Cloned because
+  // loadDataset() enriches and freezes the tree, while the "./data" package
+  // export must keep serving the pristine JSON.
+  const dataset = structuredClone(require("../data/rwanda-administrative.json"));
 
   const index = {
     provinces: new Map(),
