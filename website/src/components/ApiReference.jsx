@@ -1,3 +1,6 @@
+import { getPath, validateHierarchy } from "@derrick63/rwanda-admin-hierarchy";
+import CodeBlock from "./CodeBlock.jsx";
+
 const FUNCTION_GROUPS = [
   {
     title: "Traverse",
@@ -49,6 +52,13 @@ const ENDPOINTS = [
 ];
 
 export default function ApiReference() {
+  const pathExample = JSON.stringify(getPath("village-11010103"), null, 2);
+  const validateExample = JSON.stringify(
+    validateHierarchy({ province: "Kigali", district: "Nyarugenge", sector: "Gitega" }),
+    null,
+    2
+  );
+
   return (
     <section id="api" className="section section--light">
       <div className="section-inner">
@@ -86,6 +96,26 @@ export default function ApiReference() {
                 </li>
               ))}
             </ul>
+          </div>
+        </div>
+
+        <div className="api-shapes">
+          <h3>What comes back</h3>
+          <p className="api-note">
+            These two responses are generated in your browser by the package as this page renders —
+            they cannot drift out of date.
+          </p>
+          <div className="api-shapes-grid">
+            <CodeBlock
+              language="json"
+              filename={'getPath("village-11010103")'}
+              code={pathExample}
+            />
+            <CodeBlock
+              language="json"
+              filename={'validateHierarchy({ province: "Kigali", … })'}
+              code={validateExample}
+            />
           </div>
         </div>
       </div>

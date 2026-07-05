@@ -251,11 +251,133 @@ code {
   margin-top: 2.2rem;
 }
 
-.hero-install > code {
-  padding: 0.7rem 1rem;
+/* ---------------------------------------------------- code, copy buttons */
+.copy-command {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.5rem 0.55rem 0.5rem 1rem;
   background: var(--hill);
   border: 1px solid var(--hill-line);
   border-radius: 6px;
+  color: var(--mist);
+}
+
+.copy-button {
+  padding: 0.28rem 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--mist);
+  background: transparent;
+  border: 1px solid var(--hill-line);
+  border-radius: 5px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.copy-button:hover {
+  border-color: var(--sun);
+}
+
+.copy-button--done,
+.copy-button--done:hover {
+  background: var(--sun);
+  border-color: var(--sun);
+  color: var(--ink-tea);
+}
+
+.codeblock {
+  margin: 1rem 0;
+  background: var(--hill);
+  border: 1px solid var(--hill-line);
+  border-radius: 8px;
+  overflow: hidden;
+  color: var(--mist);
+}
+
+.codeblock-header {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.5rem 0.65rem 0.5rem 1.1rem;
+  border-bottom: 1px solid var(--hill-line);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--mist-dim);
+}
+
+.codeblock-file {
+  font-weight: 600;
+  color: var(--mist);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.codeblock-lang {
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-size: 0.68rem;
+}
+
+.codeblock-header .copy-button {
+  margin-left: auto;
+}
+
+.codeblock pre {
+  margin: 0;
+  padding: 1.1rem 1.3rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+/* Prism tokens, tuned to the site palette */
+.token.comment,
+.token.prolog,
+.token.doctype {
+  color: #7d937e;
+  font-style: italic;
+}
+
+.token.string,
+.token.attr-value,
+.token.char,
+.token.inserted {
+  color: #b9d98c;
+}
+
+.token.keyword,
+.token.builtin,
+.token.important,
+.token.atrule {
+  color: var(--sun);
+}
+
+.token.function,
+.token.class-name,
+.token.tag,
+.token.selector {
+  color: #9fd8c4;
+}
+
+.token.attr-name,
+.token.property,
+.token.key {
+  color: #f0cf6e;
+}
+
+.token.number,
+.token.boolean,
+.token.constant {
+  color: #e5c49b;
+}
+
+.token.punctuation,
+.token.operator {
+  color: var(--mist-dim);
 }
 
 .button {
@@ -483,27 +605,13 @@ code {
   margin-top: 1.4rem;
 }
 
-.tab-install code {
-  display: inline-block;
-  padding: 0.55rem 0.9rem;
-  background: var(--hill);
-  border: 1px solid var(--hill-line);
-  border-radius: 6px;
+.tab-install {
+  margin: 0 0 1rem;
 }
 
-.code-block {
-  margin: 1rem 0;
-  padding: 1.2rem 1.4rem;
-  background: var(--hill);
-  border: 1px solid var(--hill-line);
-  border-radius: 6px;
-  overflow-x: auto;
-  font-size: 0.88rem;
-  line-height: 1.55;
-}
-
-.code-block code {
-  font-size: inherit;
+.tab-install-hint {
+  font-size: 0.9rem;
+  color: var(--mist-dim);
 }
 
 .tab-note {
@@ -551,6 +659,23 @@ code {
   font-size: 0.9rem;
   color: #45604f;
   max-width: 34rem;
+}
+
+.api-shapes {
+  margin-top: 3.5rem;
+}
+
+.api-shapes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 46rem) {
+  .api-shapes-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ---------------------------------------------------------------- footer */

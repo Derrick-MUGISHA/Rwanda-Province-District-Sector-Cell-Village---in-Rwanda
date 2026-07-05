@@ -1,4 +1,5 @@
 import { getPath } from "@derrick63/rwanda-admin-hierarchy";
+import { CopyCommand } from "./CodeBlock.jsx";
 import { LEVELS } from "../levels.js";
 
 const EXAMPLE_VILLAGE = "village-11010103";
@@ -57,7 +58,7 @@ export default function Hero() {
       </figure>
 
       <div className="hero-install">
-        <code>npm install @derrick63/rwanda-admin-hierarchy</code>
+        <CopyCommand command="npm install @derrick63/rwanda-admin-hierarchy" />
         <a className="button" href="#quick-start">
           Quick start
         </a>
