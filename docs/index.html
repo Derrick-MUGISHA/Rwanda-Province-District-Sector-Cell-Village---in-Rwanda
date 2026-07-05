@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rwanda Admin Hierarchy — every village in Rwanda, one API away</title>
+<meta name="description" content="Complete Rwanda administrative hierarchy dataset: 5 provinces, 30 districts, 416 sectors, 2,142 cells, 14,816 villages. npm, PyPI, Maven, CSV/SQL.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,500..900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FDFBF7;
+    --ink: #1A1611;
+    --clay: #6B5B45;
+    --ochre: #C77D0A;
+    --ochre-deep: #9A5F03;
+    --green: #1E5C46;
+    --line: #E4DDD0;
+    --chevron: repeating-linear-gradient(
+      135deg,
+      var(--ink) 0 8px, var(--paper) 8px 16px,
+      var(--ochre) 16px 24px, var(--paper) 24px 32px
+    );
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .chevron-strip { height: 10px; background: var(--chevron); }
+  main { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+
+  .display {
+    font-family: "Archivo", sans-serif;
+    font-stretch: 125%;
+    font-weight: 850;
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+    margin: 0;
+  }
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--clay);
+  }
+  code, .mono { font-family: "IBM Plex Mono", monospace; }
+
+  /* ---------- hero ---------- */
+  header.hero { padding: 56px 0 8px; }
+  .hero .eyebrow a { color: inherit; }
+  .hero h1 { font-size: clamp(40px, 7vw, 72px); margin: 10px 0 18px; }
+  .hero h1 em { font-style: normal; color: var(--ochre-deep); }
+  .hero p.lede { max-width: 60ch; margin: 0 0 36px; font-size: 18px; color: #3E362B; }
+
+  /* staircase: the hierarchy made literal */
+  .staircase { margin: 0 0 44px; padding: 0; list-style: none; }
+  .staircase li {
+    display: flex; align-items: baseline; gap: 14px;
+    border-left: 3px solid var(--ochre);
+    padding: 6px 0 6px 16px;
+  }
+  .staircase li:nth-child(1) { margin-left: 0; }
+  .staircase li:nth-child(2) { margin-left: 7%; }
+  .staircase li:nth-child(3) { margin-left: 14%; }
+  .staircase li:nth-child(4) { margin-left: 21%; }
+  .staircase li:nth-child(5) { margin-left: 28%; border-left-color: var(--green); }
+  .staircase .count {
+    font-family: "Archivo", sans-serif; font-stretch: 125%; font-weight: 800;
+    font-size: clamp(22px, 3.4vw, 34px); min-width: 3.6em; font-variant-numeric: tabular-nums;
+  }
+  .staircase .level { font-weight: 600; }
+  .staircase .kiny { color: var(--clay); font-size: 14px; }
+
+  /* ---------- search (signature) ---------- */
+  .finder { padding: 8px 0 56px; }
+  .finder label { display: block; margin-bottom: 10px; }
+  .searchwrap { position: relative; }
+  input[type="search"] {
+    width: 100%;
+    font: 500 20px/1.2 "IBM Plex Sans", sans-serif;
+    color: var(--ink);
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    padding: 18px 20px;
+    box-shadow: 6px 6px 0 var(--ochre);
+    outline: none;
+  }
+  input[type="search"]:focus-visible { box-shadow: 6px 6px 0 var(--green); }
+  .search-status { margin-top: 14px; font-size: 14px; color: var(--clay); min-height: 1.4em; }
+  .results { margin: 18px 0 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+  .result {
+    border: 1px solid var(--line);
+    background: #fff;
+    padding: 14px 18px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .result { animation: rise .25s ease both; }
+    .result:nth-child(2) { animation-delay: .04s; }
+    .result:nth-child(3) { animation-delay: .08s; }
+    .result:nth-child(4) { animation-delay: .12s; }
+    .result:nth-child(n+5) { animation-delay: .16s; }
+    @keyframes rise { from { opacity: 0; transform: translateY(6px); } }
+  }
+  .result .path { display: flex; flex-wrap: wrap; align-items: baseline; row-gap: 2px; }
+  .result .step { white-space: nowrap; }
+  .result .step + .step::before { content: "›"; margin: 0 8px; color: var(--ochre-deep); }
+  .result .step.hit { font-weight: 600; background: #F7E7C8; padding: 0 4px; }
+  .result .meta { margin-top: 6px; font-size: 13px; color: var(--clay); }
+  .result .meta code { color: var(--green); }
+
+  /* ---------- sections ---------- */
+  section { padding: 52px 0; }
+  section > h2 { font-size: clamp(26px, 4vw, 38px); margin: 6px 0 10px; }
+  section > .eyebrow { margin: 0; }
+  section p.note { max-width: 62ch; color: #3E362B; }
+
+  /* browse cascade */
+  .cascade { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 22px; }
+  .cascade .slot label { display: block; font-size: 13px; margin-bottom: 6px; color: var(--clay); }
+  .cascade select {
+    width: 100%; font: 15px "IBM Plex Sans", sans-serif;
+    padding: 10px; border: 1.5px solid var(--ink); border-radius: 0; background: #fff; color: var(--ink);
+  }
+  .cascade select:disabled { border-color: var(--line); color: var(--clay); background: var(--paper); }
+  .cascade select:focus-visible { outline: 3px solid var(--ochre); outline-offset: 1px; }
+  .chosen { margin-top: 18px; font-size: 15px; min-height: 1.6em; }
+  .chosen code { background: #F1EBDF; padding: 2px 6px; }
+
+  /* install */
+  .tabs { display: flex; gap: 0; margin-top: 22px; flex-wrap: wrap; }
+  .tabs button {
+    font: 600 14px "IBM Plex Sans", sans-serif;
+    padding: 10px 18px; cursor: pointer;
+    background: var(--paper); color: var(--ink);
+    border: 1.5px solid var(--ink); border-bottom: none; border-radius: 0;
+    margin-right: -1.5px;
+  }
+  .tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+  .tabs button:focus-visible { outline: 3px solid var(--ochre); outline-offset: -3px; position: relative; }
+  pre {
+    margin: 0; border: 1.5px solid var(--ink);
+    background: #201B14; color: #F3EDE2;
+    padding: 20px; overflow-x: auto;
+    font: 13.5px/1.7 "IBM Plex Mono", monospace;
+  }
+  pre .c { color: #A99B83; }
+  pre .g { color: #8FD3B6; }
+  pre .y { color: #EFBF6A; }
+
+  /* facts */
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin-top: 24px; }
+  .fact { border: 1px solid var(--line); background: #fff; padding: 18px; }
+  .fact h3 { margin: 0 0 6px; font-size: 16px; }
+  .fact p { margin: 0; font-size: 14.5px; color: #3E362B; }
+
+  footer {
+    margin-top: 40px; padding: 34px 24px 46px;
+    border-top: 1.5px solid var(--ink);
+    font-size: 14px; color: var(--clay);
+  }
+  footer .inner { max-width: 980px; margin: 0 auto; }
+  a { color: var(--green); text-underline-offset: 2px; }
+  a:focus-visible { outline: 3px solid var(--ochre); outline-offset: 2px; }
+
+  @media (max-width: 760px) {
+    .cascade { grid-template-columns: 1fr; }
+    .staircase li:nth-child(n) { margin-left: 0; }
+    .staircase { border-left: 3px solid var(--ochre); }
+    .staircase li { border-left: none; padding-left: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="chevron-strip" role="presentation"></div>
+
+<main>
+  <header class="hero">
+    <p class="eyebrow">open dataset · npm / pypi / maven · data CC BY 4.0 · source: <a href="https://www.statistics.gov.rw">NISR</a> 2019-07</p>
+    <h1 class="display">Every village in Rwanda,<br><em>one API away.</em></h1>
+    <p class="lede">
+      The complete official ladder of Rwanda's administrative divisions — with NISR codes,
+      ISO&nbsp;3166-2 province codes, name search, and address validation — packaged for
+      JavaScript, Python, and Java.
+    </p>
+
+    <ol class="staircase" aria-label="Dataset contents by level">
+      <li><span class="count">5</span> <span class="level">Provinces</span> <span class="kiny">Intara</span></li>
+      <li><span class="count">30</span> <span class="level">Districts</span> <span class="kiny">Uturere</span></li>
+      <li><span class="count">416</span> <span class="level">Sectors</span> <span class="kiny">Imirenge</span></li>
+      <li><span class="count">2,142</span> <span class="level">Cells</span> <span class="kiny">Utugari</span></li>
+      <li><span class="count">14,816</span> <span class="level">Villages</span> <span class="kiny">Imidugudu</span></li>
+    </ol>
+  </header>
+
+  <section class="finder" id="find">
+    <label class="eyebrow" for="q">Find your umudugudu</label>
+    <div class="searchwrap">
+      <input id="q" type="search" autocomplete="off" spellcheck="false"
+             placeholder="Try: Iterambere, Gitega, Nyarugenge…" disabled>
+    </div>
+    <p class="search-status" id="status" role="status">Loading the dataset…</p>
+    <ol class="results" id="results" aria-label="Search results"></ol>
+  </section>
+
+  <div class="chevron-strip" role="presentation"></div>
+
+  <section id="browse">
+    <p class="eyebrow">browse</p>
+    <h2 class="display">Walk the ladder</h2>
+    <p class="note">The same cascade every Rwandan address form needs — five selects, each filtered by the one above. This demo is wired to the raw dataset; the packages ship helpers that do this for you.</p>
+    <div class="cascade" id="cascade">
+      <div class="slot"><label for="sel-province">Province</label><select id="sel-province" disabled><option>—</option></select></div>
+      <div class="slot"><label for="sel-district">District</label><select id="sel-district" disabled><option>—</option></select></div>
+      <div class="slot"><label for="sel-sector">Sector</label><select id="sel-sector" disabled><option>—</option></select></div>
+      <div class="slot"><label for="sel-cell">Cell</label><select id="sel-cell" disabled><option>—</option></select></div>
+      <div class="slot"><label for="sel-village">Village</label><select id="sel-village" disabled><option>—</option></select></div>
+    </div>
+    <p class="chosen" id="chosen"></p>
+  </section>
+
+  <div class="chevron-strip" role="presentation"></div>
+
+  <section id="install">
+    <p class="eyebrow">install</p>
+    <h2 class="display">Three languages, one dataset</h2>
+    <div class="tabs" role="tablist" aria-label="Package ecosystem">
+      <button role="tab" aria-selected="true" data-tab="node">Node.js</button>
+      <button role="tab" aria-selected="false" data-tab="python">Python</button>
+      <button role="tab" aria-selected="false" data-tab="java">Java</button>
+      <button role="tab" aria-selected="false" data-tab="data">Raw data</button>
+    </div>
+    <pre id="pane-node" data-pane="node"><code><span class="c"># zero runtime dependencies, TypeScript types included</span>
+npm install @derrick63/rwanda-admin-hierarchy
+
+<span class="g">const</span> { search, getPath, isValidHierarchy } = <span class="g">require</span>(<span class="y">"@derrick63/rwanda-admin-hierarchy"</span>);
+
+search(<span class="y">"Iterambere"</span>);                  <span class="c">// name search with typo tolerance</span>
+getPath(<span class="y">"village-11010103"</span>);           <span class="c">// full chain from any NISR code or id</span>
+isValidHierarchy({ province: <span class="y">"RW-01"</span>, district: <span class="y">"Nyarugenge"</span> }); <span class="c">// true</span></code></pre>
+    <pre id="pane-python" data-pane="python" hidden><code><span class="c"># pip install rwanda-admin-hierarchy</span>
+<span class="g">import</span> rwanda_admin_hierarchy <span class="g">as</span> rw
+
+rw.get_provinces()
+rw.get_villages_by_cell_id(<span class="y">"province-umujyi-wa-kigali-district-nyarugenge-sector-gitega-cell-akabahizi"</span>)
+rw.get_data_meta()[<span class="y">"counts"</span>]  <span class="c"># {'provinces': 5, ... 'villages': 14816}</span></code></pre>
+    <pre id="pane-java" data-pane="java" hidden><code><span class="c">// io.github.derickmugisha : rwanda-admin-hierarchy (GitHub Packages)</span>
+RwandaHierarchyService service = RwandaHierarchyService.loadDefault();
+List&lt;Province&gt; provinces = service.getProvinces();
+service.getDistrictsByProvinceId(<span class="y">"province-umujyi-wa-kigali"</span>);</code></pre>
+    <pre id="pane-data" data-pane="data" hidden><code><span class="c"># every GitHub release also ships flat files for analysts:</span>
+villages.csv      <span class="c"># one denormalized row per village, with all codes</span>
+rwanda.sql        <span class="c"># portable schema + inserts (SQLite / Postgres / MySQL)</span>
+rwanda.sqlite     <span class="c"># ready-to-query database</span>
+rwanda-administrative.json</code></pre>
+  </section>
+
+  <section id="trust">
+    <p class="eyebrow">why trust it</p>
+    <h2 class="display">Built to be audited</h2>
+    <div class="facts">
+      <div class="fact"><h3>Official source, cited</h3><p>Generated from the NISR "List of Villages" publication; the snapshot date ships inside the data as <code>dataVersion</code>.</p></div>
+      <div class="fact"><h3>No silent data loss</h3><p>The build fails if a single village code in the source document is missing from the output.</p></div>
+      <div class="fact"><h3>Standard codes</h3><p>NISR codes at every level plus ISO 3166-2 codes for provinces, so the data joins cleanly with any international system.</p></div>
+      <div class="fact"><h3>Stable ids, with migrations</h3><p>When an id changes between releases, <code>changes.json</code> maps old to new and <code>resolveId()</code> follows it.</p></div>
+      <div class="fact"><h3>Community-corrected</h3><p>Spotted a wrong village? <a href="https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda/issues/new/choose">Open a data-correction issue</a> — reports from people who know these places keep the data honest.</p></div>
+      <div class="fact"><h3>Electrification context</h3><p>Each village carries its National Electrification Plan category (grid, solar, or microgrid) from the source document.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="inner">
+    Data © National Institute of Statistics of Rwanda, packaged under
+    <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> ·
+    code under ISC ·
+    <a href="https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda">GitHub</a> ·
+    <a href="https://www.npmjs.com/package/@derrick63/rwanda-admin-hierarchy">npm</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  const DATA_URL =
+    "https://raw.githubusercontent.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda/main/data/rwanda-administrative.json";
+
+  const $ = (id) => document.getElementById(id);
+  const statusEl = $("status");
+  const input = $("q");
+  const resultsEl = $("results");
+
+  const norm = (s) =>
+    String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()
+      .replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
+
+  let entries = [];   // { name, norm, level, path: [names...], code }
+  let tree = null;
+
+  function indexDataset(data) {
+    tree = data;
+    for (const p of data.provinces) {
+      entries.push({ name: p.name, level: "Province", path: [p.name], code: null, hit: 0 });
+      for (const d of p.districts) {
+        entries.push({ name: d.name, level: "District", path: [p.name, d.name], code: null, hit: 1 });
+        for (const s of d.sectors) {
+          entries.push({ name: s.name, level: "Sector", path: [p.name, d.name, s.name], code: null, hit: 2 });
+          for (const c of s.cells) {
+            entries.push({ name: c.name, level: "Cell", path: [p.name, d.name, s.name, c.name], code: null, hit: 3 });
+            for (const v of c.villages) {
+              entries.push({
+                name: v.name, level: "Village",
+                path: [p.name, d.name, s.name, c.name, v.name],
+                code: v.id.replace("village-", ""), hit: 4,
+              });
+            }
+          }
+        }
+      }
+    }
+    for (const e of entries) e.norm = norm(e.name);
+  }
+
+  function searchEntries(q) {
+    const nq = norm(q);
+    if (!nq) return [];
+    const scored = [];
+    for (const e of entries) {
+      let score = 0;
+      if (e.norm === nq) score = 3;
+      else if (e.norm.startsWith(nq)) score = 2;
+      else if (nq.length >= 3 && e.norm.includes(nq)) score = 1;
+      if (score) scored.push([score, e]);
+    }
+    scored.sort((a, b) => b[0] - a[0] || a[1].hit - b[1].hit || a[1].name.localeCompare(b[1].name));
+    return scored.slice(0, 12).map((x) => x[1]);
+  }
+
+  function render(list, q) {
+    resultsEl.textContent = "";
+    for (const e of list) {
+      const li = document.createElement("li");
+      li.className = "result";
+      const path = document.createElement("p");
+      path.className = "path";
+      path.style.margin = "0";
+      e.path.forEach((name, i) => {
+        const span = document.createElement("span");
+        span.className = "step" + (i === e.hit ? " hit" : "");
+        span.textContent = name;
+        path.appendChild(span);
+      });
+      const meta = document.createElement("p");
+      meta.className = "meta";
+      meta.innerHTML = e.level + (e.code ? " · NISR code <code>" + e.code + "</code>" : "");
+      li.appendChild(path);
+      li.appendChild(meta);
+      resultsEl.appendChild(li);
+    }
+    statusEl.textContent = q
+      ? (list.length ? list.length + (list.length === 12 ? "+" : "") + " matches" : "No matches — check the spelling, or open a data-correction issue if we're missing it.")
+      : "";
+  }
+
+  // ---------- cascade ----------
+  const sel = {
+    province: $("sel-province"), district: $("sel-district"), sector: $("sel-sector"),
+    cell: $("sel-cell"), village: $("sel-village"),
+  };
+  const chosen = $("chosen");
+
+  function fill(select, items, placeholder) {
+    select.textContent = "";
+    const first = document.createElement("option");
+    first.value = "";
+    first.textContent = placeholder;
+    select.appendChild(first);
+    items.forEach((item, i) => {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = item.name;
+      select.appendChild(opt);
+    });
+    select.disabled = items.length === 0;
+  }
+
+  function resetBelow(level) {
+    const order = ["district", "sector", "cell", "village"];
+    for (const l of order.slice(order.indexOf(level))) {
+      fill(sel[l], [], "—");
+    }
+    chosen.textContent = "";
+  }
+
+  function wireCascade() {
+    fill(sel.province, tree.provinces, "Choose a province");
+    sel.province.onchange = () => {
+      resetBelow("district");
+      const p = tree.provinces[sel.province.value];
+      if (p) fill(sel.district, p.districts, "Choose a district");
+    };
+    sel.district.onchange = () => {
+      resetBelow("sector");
+      const p = tree.provinces[sel.province.value];
+      const d = p && p.districts[sel.district.value];
+      if (d) fill(sel.sector, d.sectors, "Choose a sector");
+    };
+    sel.sector.onchange = () => {
+      resetBelow("cell");
+      const p = tree.provinces[sel.province.value];
+      const d = p && p.districts[sel.district.value];
+      const s = d && d.sectors[sel.sector.value];
+      if (s) fill(sel.cell, s.cells, "Choose a cell");
+    };
+    sel.cell.onchange = () => {
+      resetBelow("village");
+      const p = tree.provinces[sel.province.value];
+      const d = p && p.districts[sel.district.value];
+      const s = d && d.sectors[sel.sector.value];
+      const c = s && s.cells[sel.cell.value];
+      if (c) fill(sel.village, c.villages, "Choose a village");
+    };
+    sel.village.onchange = () => {
+      const p = tree.provinces[sel.province.value];
+      const d = p.districts[sel.district.value];
+      const s = d.sectors[sel.sector.value];
+      const c = s.cells[sel.cell.value];
+      const v = c.villages[sel.village.value];
+      chosen.innerHTML = v
+        ? "Selected: <strong>" + v.name + "</strong> — id <code>" + v.id + "</code>, NEP <code>" + v.nep + "</code>"
+        : "";
+    };
+  }
+
+  // ---------- tabs ----------
+  document.querySelectorAll(".tabs [role=tab]").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".tabs [role=tab]").forEach((t) => t.setAttribute("aria-selected", t === tab));
+      document.querySelectorAll("pre[data-pane]").forEach((p) => (p.hidden = p.dataset.pane !== tab.dataset.tab));
+    });
+  });
+
+  // ---------- boot ----------
+  fetch(DATA_URL)
+    .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then((data) => {
+      indexDataset(data);
+      wireCascade();
+      input.disabled = false;
+      statusEl.textContent = entries.length.toLocaleString() + " places indexed — start typing.";
+      let t;
+      input.addEventListener("input", () => {
+        clearTimeout(t);
+        t = setTimeout(() => render(searchEntries(input.value), input.value), 80);
+      });
+      input.focus({ preventScroll: true });
+    })
+    .catch(() => {
+      statusEl.textContent =
+        "Couldn't load the dataset (offline?). Install the package instead: npm install @derrick63/rwanda-admin-hierarchy";
+    });
+})();
+</script>
+</body>
+</html>

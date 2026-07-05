@@ -1,0 +1,29 @@
+{
+  "description": "Migration map for node ids that changed between released versions of this dataset. Systems that stored an old id can resolve it to the current one with resolveId() (Node API) or by following oldId -> newId here. Entries are never deleted.",
+  "changes": [
+    {
+      "sinceVersion": "1.1.0",
+      "type": "merged",
+      "level": "sector",
+      "oldId": "province-umujyi-wa-kigali-district-nyarugenge-sector-mageragere",
+      "newId": "province-umujyi-wa-kigali-district-nyarugenge-sector-mageregere",
+      "reason": "The source PDF spells sector 1105 'Mageregere' in 43 rows and 'Mageragere' in 1; both were previously emitted as separate sectors. Names are now reconciled to the majority spelling per NISR code."
+    },
+    {
+      "sinceVersion": "1.1.0",
+      "type": "merged",
+      "level": "cell",
+      "oldId": "province-umujyi-wa-kigali-district-nyarugenge-sector-mageragere-cell-mwendo",
+      "newId": "province-umujyi-wa-kigali-district-nyarugenge-sector-mageregere-cell-mataba",
+      "reason": "Cell 110503 appeared once as 'Mwendo' under the misspelled sector; its village (village-11050304) belongs to cell Mataba per its NISR code."
+    },
+    {
+      "sinceVersion": "1.1.0",
+      "type": "merged",
+      "level": "cell",
+      "oldId": "province-iburasirazuba-district-kirehe-sector-mahama-cell-umunini",
+      "newId": "province-iburasirazuba-district-kirehe-sector-mahama-cell-munini",
+      "reason": "The source PDF spells cell 550604 'Munini' in 5 rows and 'Umunini' in 1; reconciled to the majority spelling."
+    }
+  ]
+}

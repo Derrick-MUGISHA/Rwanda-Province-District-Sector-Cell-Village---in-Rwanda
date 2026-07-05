@@ -3,6 +3,7 @@ const { test } = require("node:test");
 
 const {
   getDataset,
+  getDataMeta,
   getProvinces,
   getDistrictsByProvinceId,
   getSectorsByDistrictId,
@@ -26,6 +27,17 @@ test("getProvinces returns provinces with ids and names", () => {
     assert.ok(province.name);
     assert.ok(Array.isArray(province.districts));
   }
+});
+
+test("getDataMeta exposes provenance and counts", () => {
+  const meta = getDataMeta();
+  assert.equal(meta.country, "Rwanda");
+  assert.equal(meta.dataVersion, "2019-07");
+  assert.match(meta.source, /NISR/);
+  assert.equal(meta.license, "CC-BY-4.0");
+  assert.equal(meta.counts.provinces, 5);
+  assert.equal(meta.counts.districts, 30);
+  assert.ok(meta.counts.villages > 14000);
 });
 
 test("dataset is deep-frozen", () => {

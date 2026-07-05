@@ -1,0 +1,66 @@
+# Rwanda occasionally adjusts sector/cell/village boundaries. The dataset is
+# built from a fixed NISR snapshot (see dataVersion in
+# data/rwanda-administrative.json), so this quarterly job validates the data
+# still passes integrity checks and opens a reminder issue to check NISR
+# (https://www.statistics.gov.rw) for a newer "List of Villages" release.
+name: Data freshness check
+
+on:
+  schedule:
+    # First day of each quarter, 06:00 UTC.
+    - cron: "0 6 1 1,4,7,10 *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run validate:data
+      - name: Open reminder issue (unless one is already open)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = "Quarterly data review: check NISR for administrative boundary updates";
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              labels: "data-freshness",
+            });
+            if (issues.length > 0) {
+              core.info(`Skipping: issue #${issues[0].number} is already open.`);
+              return;
+            }
+            const fs = require("fs");
+            const meta = JSON.parse(fs.readFileSync("data/rwanda-administrative.json", "utf8"));
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              labels: ["data-freshness"],
+              body: [
+                `The bundled dataset snapshot is **dataVersion ${meta.dataVersion}** (source: ${meta.source}).`,
+                "",
+                "Please check whether NISR/MINALOC has published a newer administrative structure:",
+                "- https://www.statistics.gov.rw",
+                "- https://www.minaloc.gov.rw",
+                "",
+                "If a newer release exists:",
+                "1. Replace `List_of_Villages_for_all_technology.pdf` (or adapt `scripts/build-json-from-pdf.js` to the new format).",
+                "2. Run `npm run build:data` and `npm run validate:data`.",
+                "3. Record every removed/renamed id in `data/changes.json` so `resolveId()` keeps working.",
+                "4. Bump `dataVersion` and release.",
+                "",
+                "_Opened automatically by the quarterly data-freshness workflow._",
+              ].join("\n"),
+            });

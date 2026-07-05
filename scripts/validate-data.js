@@ -29,6 +29,12 @@ function validate() {
     return fail(errors);
   }
 
+  for (const field of ["dataVersion", "source", "sourceDate", "license"]) {
+    if (!dataset[field]) {
+      errors.push(`Root object is missing provenance field "${field}"`);
+    }
+  }
+
   for (const province of dataset.provinces) {
     if (!province.id || !province.name || !Array.isArray(province.districts)) {
       errors.push(`Invalid province object for "${province.name || "unknown"}"`);
@@ -75,7 +81,13 @@ function validate() {
           }
           globalIds.add(cell.id);
 
-          pushDuplicateNameError(errors, cell.villages, `cell ${cell.name}`);
+          // Distinct villages with the same name inside one cell exist in the
+          // official data (they have different NISR codes), so only warn.
+          const nameWarnings = [];
+          pushDuplicateNameError(nameWarnings, cell.villages, `cell ${cell.name}`);
+          for (const warning of nameWarnings) {
+            console.warn(`warning: ${warning}`);
+          }
 
           for (const village of cell.villages) {
             if (!village.id || !village.name) {
@@ -89,6 +101,18 @@ function validate() {
           }
         }
       }
+    }
+  }
+
+  // Every migration target in changes.json must exist in the current
+  // dataset, and no old id may still be present.
+  const { changes } = require("../data/changes.json");
+  for (const change of changes) {
+    if (change.newId && !globalIds.has(change.newId)) {
+      errors.push(`changes.json: newId does not exist in dataset: ${change.newId}`);
+    }
+    if (globalIds.has(change.oldId)) {
+      errors.push(`changes.json: oldId still exists in dataset: ${change.oldId}`);
     }
   }
 

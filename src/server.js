@@ -14,6 +14,7 @@ try {
 }
 
 const { loadDataset } = require("./data-store");
+const { search, getPath, validateHierarchy, getDataMeta } = require("./index");
 
 const app = express();
 const port = Number(process.env.PORT) || 3000;
@@ -57,6 +58,10 @@ function isValidId(value) {
 
 app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
+});
+
+app.get("/api/meta", (_req, res) => {
+  res.json(getDataMeta());
 });
 
 app.get("/api/dataset", (_req, res) => {
@@ -128,6 +133,55 @@ app.get("/api/cells/:cellId/villages", (req, res) => {
   }
 
   return res.json(cell.villages);
+});
+
+const searchLevels = new Set(["province", "district", "sector", "cell", "village"]);
+
+app.get("/api/search", (req, res) => {
+  const q = typeof req.query.q === "string" ? req.query.q.trim() : "";
+  if (!q) {
+    return res.status(400).json({ error: "Missing query parameter q" });
+  }
+  if (q.length > 100) {
+    return res.status(400).json({ error: "Query too long (max 100 characters)" });
+  }
+
+  let levels;
+  if (typeof req.query.levels === "string" && req.query.levels.trim()) {
+    levels = req.query.levels.split(",").map((level) => level.trim().toLowerCase());
+    const unknown = levels.filter((level) => !searchLevels.has(level));
+    if (unknown.length > 0) {
+      return res.status(400).json({ error: `Unknown level(s): ${unknown.join(", ")}` });
+    }
+  }
+
+  const limit = Math.min(Math.max(Number(req.query.limit) || 20, 1), 100);
+  return res.json(search(q, { levels, limit }));
+});
+
+app.get("/api/path/:id", (req, res) => {
+  if (!isValidId(req.params.id)) {
+    return res.status(400).json({ error: "Invalid ID format" });
+  }
+  const path = getPath(req.params.id);
+  if (!path) {
+    return res.status(404).json({ error: "ID not found" });
+  }
+  return res.json(path);
+});
+
+app.get("/api/validate", (req, res) => {
+  const parts = {};
+  for (const level of searchLevels) {
+    const value = req.query[level];
+    if (typeof value === "string" && value.trim()) {
+      if (value.length > 150) {
+        return res.status(400).json({ error: `Value for ${level} too long (max 150 characters)` });
+      }
+      parts[level] = value;
+    }
+  }
+  return res.json(validateHierarchy(parts));
 });
 
 app.use((_req, res) => {
