@@ -60,7 +60,7 @@ export default function ApiReference() {
   );
 
   return (
-    <section id="api" className="section section--light">
+    <section id="api" className="section section--light section--ruled">
       <div className="section-inner">
         <p className="eyebrow">API reference</p>
         <h2>Small surface, whole country</h2>

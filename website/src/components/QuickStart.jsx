@@ -117,13 +117,13 @@ export default function QuickStart() {
   const tab = TABS.find((t) => t.id === active);
 
   return (
-    <section id="quick-start" className="section section--dark">
+    <section id="stacks" className="section section--light">
       <div className="section-inner">
-        <p className="eyebrow">Quick start</p>
+        <p className="eyebrow">Use it in your stack</p>
         <h2>One dataset, five ecosystems</h2>
         <p className="section-lead">
-          The same hierarchy, the same ids and NISR codes, in whichever stack your project uses —
-          frontend or backend. Pick yours:
+          Everything from <a href="#get-started">Get started</a> applies in every stack — the same
+          hierarchy, ids and NISR codes on the frontend and the backend. Pick yours:
         </p>
 
         <div className="tabs" role="tablist" aria-label="Choose your stack">
