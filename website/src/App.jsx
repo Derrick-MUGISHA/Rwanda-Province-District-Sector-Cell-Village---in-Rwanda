@@ -8,6 +8,7 @@ import GetStarted from "./components/GetStarted.jsx";
 import Guides from "./components/Guides.jsx";
 import ApiReference from "./components/ApiReference.jsx";
 import Mark from "./components/Mark.jsx";
+import RegistryStats from "./components/RegistryStats.jsx";
 import { StackProvider } from "./stack-context.jsx";
 import { cn } from "./lib/utils.js";
 
@@ -209,6 +210,7 @@ export default function App() {
         <div className="hills-bg">
           <Hero />
           <Cascade counts={meta.counts} />
+          <RegistryStats />
         </div>
         <Demo />
         <GetStarted />
