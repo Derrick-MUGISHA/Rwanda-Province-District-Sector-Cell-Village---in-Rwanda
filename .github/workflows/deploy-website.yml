@@ -1,4 +1,4 @@
-name: Deploy Documentation Website
+name: Website Pipeline (Vercel)
 
 on:
   push:
@@ -8,44 +8,117 @@ on:
       - "src/**"
       - "data/**"
       - ".github/workflows/deploy-website.yml"
+  pull_request:
+    paths:
+      - "website/**"
+      - "src/**"
+      - "data/**"
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 jobs:
-  build:
+  # The site bundles the npm package itself (file: dependency), so a broken
+  # package means a broken site — gate every deploy on the package suite.
+  test-package:
+    name: Test bundled package
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run validate:data
+      - run: npm test
+
+  build-site:
+    name: Build site
+    needs: test-package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
           cache: npm
           cache-dependency-path: website/package-lock.json
       - run: npm ci
         working-directory: website
       - run: npm run build
         working-directory: website
-        env:
-          # Pages serves the site under the repository path.
-          VITE_BASE: /${{ github.event.repository.name }}/
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
+          name: website-dist
           path: website/dist
+          retention-days: 7
 
-  deploy:
-    needs: build
+  # Deploys are skipped (with a warning) until the three Vercel secrets are
+  # configured, so the pipeline stays green for contributors and forks.
+  check-vercel-secrets:
+    name: Check Vercel secrets
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      configured: ${{ steps.check.outputs.configured }}
     steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - id: check
+        run: |
+          if [ -n "${{ secrets.VERCEL_TOKEN }}" ] && [ -n "$VERCEL_ORG_ID" ] && [ -n "$VERCEL_PROJECT_ID" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::VERCEL_TOKEN / VERCEL_ORG_ID / VERCEL_PROJECT_ID secrets are not set — skipping deploy. Run 'vercel link' in website/ and add the ids from .vercel/project.json plus a token from vercel.com/account/tokens."
+          fi
+
+  deploy-preview:
+    name: Deploy preview
+    needs: [test-package, build-site, check-vercel-secrets]
+    if: github.event_name == 'pull_request' && needs.check-vercel-secrets.outputs.configured == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install -g vercel@latest
+      - name: Pull Vercel environment
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: website
+      - name: Build for Vercel
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: website
+      - name: Deploy preview
+        id: deploy
+        run: |
+          url="$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "### Preview deployed" >> "$GITHUB_STEP_SUMMARY"
+          echo "$url" >> "$GITHUB_STEP_SUMMARY"
+        working-directory: website
+
+  deploy-production:
+    name: Deploy production
+    needs: [test-package, build-site, check-vercel-secrets]
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && needs.check-vercel-secrets.outputs.configured == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install -g vercel@latest
+      - name: Pull Vercel environment
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: website
+      - name: Build for Vercel
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: website
+      - name: Deploy to production
+        run: |
+          url="$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})"
+          echo "### Production deployed" >> "$GITHUB_STEP_SUMMARY"
+          echo "$url" >> "$GITHUB_STEP_SUMMARY"
+        working-directory: website
