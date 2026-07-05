@@ -1,3 +1,23 @@
+@import "tailwindcss";
+
+/* Tailwind theme — the same palette as the CSS variables below, exposed as
+   utilities (bg-tea, text-mist, border-leafline, font-display, …). */
+@theme {
+  --color-tea: #0e2a1e;
+  --color-hill: #16382a;
+  --color-hillline: #2a5240;
+  --color-mist: #eef2e4;
+  --color-mistdim: #b7c4ae;
+  --color-leafline: #d3ddc4;
+  --color-inkbody: #1d3327;
+  --color-forest: #45604f;
+  --color-sun: #f5b700;
+  --color-sundeep: #8a6a00;
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-body: "Public Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
 /* ---------------------------------------------------------------- tokens */
 :root {
   --ink-tea: #0e2a1e; /* page ground: deep tea-green */
@@ -97,79 +117,6 @@ code {
 
 .section--light .eyebrow {
   color: var(--sun-deep);
-}
-
-/* ---------------------------------------------------------------- topbar */
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  background: rgba(14, 42, 30, 0.92);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--hill-line);
-}
-
-.topbar-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  max-width: var(--measure);
-  margin: 0 auto;
-  padding: 0.7rem 1.5rem;
-}
-
-.topbar-brand {
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-}
-
-.topbar-name {
-  font-family: var(--font-mono);
-  font-weight: 600;
-  line-height: 1.25;
-}
-
-.topbar-by {
-  font-size: 0.72rem;
-  letter-spacing: 0.02em;
-  color: var(--mist-dim);
-}
-
-.topbar-nav {
-  display: flex;
-  gap: 1.3rem;
-  align-items: center;
-  flex-wrap: wrap;
-  font-size: 0.9rem;
-}
-
-.topbar-nav a {
-  text-decoration: none;
-  padding: 0.25rem 0;
-  border-bottom: 2px solid transparent;
-}
-
-.topbar-nav a:hover {
-  border-bottom-color: var(--sun);
-}
-
-.topbar-nav a.active {
-  border-bottom-color: var(--sun);
-  color: var(--sun);
-}
-
-.topbar-github {
-  padding: 0.3rem 0.9rem !important;
-  border: 1px solid var(--hill-line);
-  border-radius: 999px;
-}
-
-.topbar-github:hover {
-  border-color: var(--sun) !important;
-  border-bottom-color: var(--sun);
 }
 
 /* ------------------------------------------------------------------ hero */
@@ -369,6 +316,15 @@ code {
   line-height: 1.55;
 }
 
+.codeblock--compact {
+  margin: 0;
+}
+
+.codeblock--compact pre {
+  padding: 0.8rem 1rem;
+  font-size: 0.8rem;
+}
+
 /* Prism tokens, tuned to the site palette */
 .token.comment,
 .token.prolog,
@@ -564,214 +520,7 @@ code {
   }
 }
 
-/* ------------------------------------------------------------------ demo */
-.demo-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2.5rem;
-  margin-top: 2rem;
-}
-
-@media (max-width: 46rem) {
-  .demo-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.demo-widget-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
-  margin-bottom: 0.9rem;
-}
-
-.demo-widget-head h3 {
-  margin: 0;
-}
-
-.demo-reset {
-  font: inherit;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #45604f;
-  background: none;
-  border: 1px solid var(--leaf-line);
-  border-radius: 999px;
-  padding: 0.18rem 0.8rem;
-  cursor: pointer;
-}
-
-.demo-reset:hover {
-  border-color: var(--sun-deep);
-}
-
-.search-examples {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  flex-wrap: wrap;
-  font-size: 0.85rem;
-  color: #45604f;
-}
-
-.search-chip {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--ink-body);
-  background: #fff;
-  border: 1px solid var(--leaf-line);
-  border-radius: 999px;
-  padding: 0.18rem 0.7rem;
-  cursor: pointer;
-}
-
-.search-chip:hover {
-  border-color: var(--sun-deep);
-}
-
-.demo-code {
-  margin-top: 1.4rem;
-}
-
-.demo-code-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  color: #45604f;
-  margin-bottom: 0.35rem;
-}
-
-.demo-code .codeblock {
-  margin: 0;
-}
-
-.demo-code .codeblock pre {
-  font-size: 0.8rem;
-}
-
-.picker-field {
-  display: block;
-  margin-bottom: 0.9rem;
-}
-
-.picker-label {
-  display: block;
-  font-size: 0.85rem;
-  margin-bottom: 0.25rem;
-  color: #45604f;
-}
-
-.picker-label strong {
-  font-family: var(--font-display);
-  color: var(--ink-body);
-}
-
-.picker select,
-.search input {
-  width: 100%;
-  padding: 0.6rem 0.7rem;
-  font: inherit;
-  color: var(--ink-body);
-  background: #fff;
-  border: 1px solid var(--leaf-line);
-  border-radius: 6px;
-}
-
-.picker select:disabled {
-  opacity: 0.45;
-}
-
-.picker-result {
-  margin-top: 1.2rem;
-  padding: 1rem 1.2rem;
-  background: #fff;
-  border-left: 4px solid var(--sun);
-  border-radius: 0 6px 6px 0;
-}
-
-.picker-chain {
-  font-family: var(--font-display);
-  font-weight: 650;
-  margin-bottom: 0.3rem;
-}
-
-.picker-meta {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #45604f;
-}
-
-.search-results {
-  list-style: none;
-  margin: 1rem 0 0;
-  padding: 0;
-}
-
-.search-results li {
-  display: grid;
-  grid-template-columns: auto auto 1fr;
-  gap: 0.7rem;
-  align-items: baseline;
-  padding: 0.5rem 0.2rem;
-  border-top: 1px solid var(--leaf-line);
-}
-
-.search-name {
-  font-weight: 600;
-}
-
-.search-level {
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--sun-deep);
-}
-
-.search-path {
-  font-size: 0.85rem;
-  color: #45604f;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.search-empty {
-  color: #45604f;
-}
-
 /* ----------------------------------------------------------- quick start */
-.tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin: 1.8rem 0 0;
-}
-
-.tab {
-  padding: 0.5rem 0.95rem;
-  font: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--ink-body);
-  background: none;
-  border: 1px solid var(--leaf-line);
-  border-radius: 999px;
-  cursor: pointer;
-}
-
-.tab:hover {
-  border-color: var(--sun-deep);
-}
-
-.tab--active {
-  background: var(--sun);
-  border-color: var(--sun);
-  color: var(--ink-tea);
-}
-
 .tab-panel {
   margin-top: 1.4rem;
 }

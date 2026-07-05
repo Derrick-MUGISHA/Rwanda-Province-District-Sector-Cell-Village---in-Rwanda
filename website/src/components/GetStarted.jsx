@@ -49,7 +49,7 @@ export default function GetStarted() {
           </p>
           <p className="step-aside">
             Using Python, Java or Flutter instead? The same steps apply — grab your install
-            command from <a href="#stacks">Use it in your stack</a> below.
+            command from the <a href="#stacks">integration guides</a> below.
           </p>
         </Step>
 
@@ -152,7 +152,7 @@ resolveId("some-old-id");`}
             Full signatures for every function are in the{" "}
             <a href="#api">API reference</a>. To serve this data over HTTP instead of bundling
             it, jump to the FastAPI, Django or Express setups in{" "}
-            <a href="#stacks">Use it in your stack</a>.
+            the <a href="#stacks">integration guides</a>.
           </p>
         </Step>
       </div>

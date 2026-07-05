@@ -1,7 +1,12 @@
 import { useState } from "react";
 import Prism from "prismjs";
 import "prismjs/components/prism-jsx";
+import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-tsx";
 import "prismjs/components/prism-python";
+import "prismjs/components/prism-java";
+import "prismjs/components/prism-dart";
+import "prismjs/components/prism-groovy";
 import "prismjs/components/prism-json";
 import "prismjs/components/prism-yaml";
 import "prismjs/components/prism-bash";
@@ -45,10 +50,10 @@ export function CopyCommand({ command }) {
 }
 
 /** A titled, syntax-highlighted, copyable code block. */
-export default function CodeBlock({ language, filename, code }) {
+export default function CodeBlock({ language, filename, code, compact = false }) {
   const grammar = Prism.languages[language];
   return (
-    <figure className="codeblock">
+    <figure className={compact ? "codeblock codeblock--compact" : "codeblock"}>
       <figcaption className="codeblock-header">
         {filename && <span className="codeblock-file">{filename}</span>}
         <span className="codeblock-lang">{language}</span>

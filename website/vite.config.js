@@ -1,8 +1,9 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   // Served from the repository path on GitHub Pages; CI sets VITE_BASE.
   base: process.env.VITE_BASE || "/",
   resolve: {
