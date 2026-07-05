@@ -241,6 +241,8 @@ function SearchCard() {
               {example}
             </button>
           ))}
+
+          
         </p>
 
         {query.trim() && (

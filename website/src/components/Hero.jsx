@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { getPath } from "@derrick63/rwanda-admin-hierarchy";
 import { CopyCommand } from "./CodeBlock.jsx";
 import { LEVELS } from "../levels.js";
@@ -9,9 +10,11 @@ const CODE = "11010103";
  * The signature element: a real NISR village code, decoded live by the
  * package. Each digit-prefix of the code is an ancestor: 1 is the province,
  * 11 the district, 1101 the sector, 110101 the cell, 11010103 the village.
+ * Hovering a level lights up exactly the digits that encode it.
  */
 export default function Hero() {
   const path = getPath(EXAMPLE_VILLAGE);
+  const [hot, setHot] = useState(null); // number of highlighted digits, or null
 
   return (
     <section className="hero">
@@ -27,15 +30,26 @@ export default function Hero() {
         No API keys, no network calls: the dataset ships inside the package.
       </p>
 
-      <figure className="anatomy" aria-label="How an 8-digit NISR village code encodes its full ancestry">
+      <figure
+        className="anatomy"
+        aria-label="How an 8-digit NISR village code encodes its full ancestry"
+      >
         <div className="anatomy-code" aria-hidden="true">
           {CODE.split("").map((digit, i) => (
-            <span key={i}>{digit}</span>
+            <span key={i} className={hot !== null && i >= hot ? "digit-dim" : undefined}>
+              {digit}
+            </span>
           ))}
         </div>
         <ol className="anatomy-rows">
           {LEVELS.map(({ key, rw, en, digits }, i) => (
-            <li key={key} className="anatomy-row" style={{ "--i": i }}>
+            <li
+              key={key}
+              className={hot === digits ? "anatomy-row anatomy-row--hot" : "anatomy-row"}
+              style={{ "--i": i }}
+              onMouseEnter={() => setHot(digits)}
+              onMouseLeave={() => setHot(null)}
+            >
               <span className="anatomy-track">
                 <span
                   className="anatomy-bar"
@@ -53,15 +67,16 @@ export default function Hero() {
         </ol>
         <figcaption className="anatomy-caption">
           <code>getPath("{EXAMPLE_VILLAGE}")</code> — resolved in your browser by the package
-          itself.
+          itself. Hover a level to see which digits encode it.
         </figcaption>
       </figure>
 
       <div className="hero-install">
         <CopyCommand command="npm install @derrick63/rwanda-admin-hierarchy" />
-        <a className="button" href="#quick-start">
-          Quick start
+        <a className="button" href="#get-started">
+          Get started
         </a>
+        <span className="hero-registries">also on PyPI · Maven · pub</span>
       </div>
     </section>
   );

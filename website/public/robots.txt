@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rwanda-admin-hierarchy.vercel.app/sitemap.xml

@@ -7,8 +7,31 @@ import Demo from "./components/Demo.jsx";
 import GetStarted from "./components/GetStarted.jsx";
 import Guides from "./components/Guides.jsx";
 import ApiReference from "./components/ApiReference.jsx";
+import Mark from "./components/Mark.jsx";
 import { StackProvider } from "./stack-context.jsx";
 import { cn } from "./lib/utils.js";
+
+/** Fades sections up as they enter the viewport; no-ops under reduced motion. */
+function useScrollReveal() {
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const els = document.querySelectorAll(".section-inner, .cascade");
+    els.forEach((el) => el.classList.add("reveal"));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("reveal-in");
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.06 }
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+}
 
 const REPO_URL =
   "https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda";
@@ -56,9 +79,12 @@ function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-hillline bg-tea/92 backdrop-blur-md">
       <div className="mx-auto flex max-w-[68rem] items-center justify-between gap-4 px-6 py-3">
-        <a href="#top" className="flex flex-col no-underline leading-tight">
-          <span className="font-mono font-semibold text-mist">rwanda-admin-hierarchy</span>
-          <span className="text-[0.72rem] tracking-wide text-mistdim">by Derrick MUGISHA</span>
+        <a href="#top" className="flex items-center gap-3 no-underline leading-tight">
+          <Mark className="h-9 w-9" />
+          <span className="flex flex-col">
+            <span className="font-mono font-semibold text-mist">rwanda-admin-hierarchy</span>
+            <span className="text-[0.72rem] tracking-wide text-mistdim">by Derrick MUGISHA</span>
+          </span>
         </a>
 
         <nav className="hidden items-center gap-6 text-sm md:flex" aria-label="Sections">
@@ -122,38 +148,75 @@ function Navbar() {
   );
 }
 
+function Footer({ meta }) {
+  return (
+    <footer className="border-t border-hillline">
+      <div className="mx-auto grid max-w-272 gap-10 px-6 py-14 md:grid-cols-[1.5fr_1fr_1fr]">
+        <div>
+          <div className="flex items-center gap-3">
+            <Mark className="h-10 w-10" />
+            <div className="leading-tight">
+              <p className="m-0 font-mono font-semibold">rwanda-admin-hierarchy</p>
+              <p className="m-0 text-sm text-mistdim">
+                by <a href="https://github.com/Derrick-MUGISHA">Derrick MUGISHA</a>
+              </p>
+            </div>
+          </div>
+          <p className="mt-4 max-w-[26rem] text-sm text-mistdim">
+            One dataset of Rwanda's five administrative levels, kept in lockstep across four
+            package registries. Free to use — the data under CC-BY-4.0, the code under ISC.
+          </p>
+        </div>
+        <nav aria-label="Packages">
+          <h4 className="text-mist">Packages</h4>
+          <ul className="m-0 list-none space-y-2 p-0 text-sm text-mistdim">
+            <li><a href="https://www.npmjs.com/package/@derrick63/rwanda-admin-hierarchy">npm — JavaScript</a></li>
+            <li><a href="https://pypi.org/project/rwanda-admin-hierarchy/">PyPI — Python</a></li>
+            <li><a href={`${REPO_URL}/packages`}>GitHub Packages — Java</a></li>
+            <li><a href={`${REPO_URL}/tree/main/dart`}>pub via git — Dart / Flutter</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Explore">
+          <h4 className="text-mist">Explore</h4>
+          <ul className="m-0 list-none space-y-2 p-0 text-sm text-mistdim">
+            <li><a href="#demo">Live demo</a></li>
+            <li><a href="#get-started">Get started</a></li>
+            <li><a href="#stacks">Integration guides</a></li>
+            <li><a href="#api">API reference</a></li>
+            <li><a href={REPO_URL}>Source on GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div className="border-t border-hillline/60">
+        <p className="mx-auto max-w-272 px-6 py-5 text-[0.82rem] text-mistdim">
+          Data: {meta.source} ({meta.sourceDate}) · {meta.license} · codes follow{" "}
+          {meta.codeStandard} · dataset snapshot {meta.dataVersion}
+        </p>
+      </div>
+    </footer>
+  );
+}
+
 export default function App() {
   const meta = getDataMeta();
+  useScrollReveal();
 
   return (
     <StackProvider>
       <Navbar />
 
       <main id="top">
-        <Hero />
-        <Cascade counts={meta.counts} />
+        <div className="hills-bg">
+          <Hero />
+          <Cascade counts={meta.counts} />
+        </div>
         <Demo />
         <GetStarted />
         <Guides />
         <ApiReference />
       </main>
 
-      <footer className="footer">
-        <div className="footer-inner">
-          <p className="footer-author">
-            Built and maintained by <a href="https://github.com/Derrick-MUGISHA">Derrick MUGISHA</a>.
-          </p>
-          <p>
-            Data: {meta.source} ({meta.sourceDate}), published under {meta.license}. Code: ISC
-            license. Codes follow {meta.codeStandard}. Dataset snapshot {meta.dataVersion}.
-          </p>
-          <p>
-            <a href={REPO_URL}>GitHub</a> ·{" "}
-            <a href="https://www.npmjs.com/package/@derrick63/rwanda-admin-hierarchy">npm</a> ·{" "}
-            <a href="https://pypi.org/project/rwanda-admin-hierarchy/">PyPI</a>
-          </p>
-        </div>
-      </footer>
+      <Footer meta={meta} />
     </StackProvider>
   );
 }

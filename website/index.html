@@ -3,18 +3,88 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rwanda Administrative Hierarchy — every place, one package</title>
+    <title>Rwanda Administrative Hierarchy — every place in Rwanda, one package</title>
     <meta
       name="description"
-      content="The complete Rwanda administrative hierarchy — 5 provinces to 14,816 villages with NISR codes — as an npm, PyPI, Maven and Flutter package. By Derrick MUGISHA."
+      content="The complete Rwanda administrative hierarchy — 5 provinces, 30 districts, 416 sectors, 2,142 cells and 14,816 villages with official NISR codes — as an npm, PyPI, Maven and Flutter package with a live demo. By Derrick MUGISHA."
     />
     <meta name="author" content="Derrick MUGISHA" />
+    <meta name="theme-color" content="#0e2a1e" />
+    <link rel="canonical" href="https://rwanda-admin-hierarchy.vercel.app/" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Rwanda Administrative Hierarchy" />
+    <meta property="og:title" content="Every place in Rwanda, decoded from one number" />
+    <meta
+      property="og:description"
+      content="14,816 villages, 5 provinces, official NISR codes — one package for JavaScript, Python, Java and Flutter. With a live in-browser demo."
+    />
+    <meta property="og:url" content="https://rwanda-admin-hierarchy.vercel.app/" />
+    <meta property="og:image" content="https://rwanda-admin-hierarchy.vercel.app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Every place in Rwanda, decoded from one number" />
+    <meta
+      name="twitter:description"
+      content="The complete Rwanda administrative hierarchy with official NISR codes, packaged for JavaScript, Python, Java and Flutter."
+    />
+    <meta name="twitter:image" content="https://rwanda-admin-hierarchy.vercel.app/og.png" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Dataset",
+            "name": "Rwanda Administrative Hierarchy",
+            "description": "Complete administrative hierarchy of Rwanda: 5 provinces, 30 districts, 416 sectors, 2,142 cells and 14,816 villages with official NISR codes and ISO 3166-2 province codes.",
+            "url": "https://rwanda-admin-hierarchy.vercel.app/",
+            "license": "https://creativecommons.org/licenses/by/4.0/",
+            "creator": { "@id": "#derrick" },
+            "keywords": [
+              "Rwanda", "administrative divisions", "province", "district", "sector",
+              "cell", "village", "NISR", "umudugudu", "ISO 3166-2", "geodata"
+            ],
+            "spatialCoverage": { "@type": "Country", "name": "Rwanda" },
+            "isAccessibleForFree": true,
+            "distribution": [
+              {
+                "@type": "DataDownload",
+                "encodingFormat": "application/json",
+                "contentUrl": "https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda/blob/main/data/rwanda-administrative.json"
+              }
+            ]
+          },
+          {
+            "@type": "SoftwareSourceCode",
+            "name": "rwanda-admin-hierarchy",
+            "description": "Zero-dependency lookup API for the Rwanda administrative hierarchy, published for JavaScript (npm), Python (PyPI), Java (Maven) and Dart/Flutter.",
+            "codeRepository": "https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda",
+            "programmingLanguage": ["JavaScript", "Python", "Java", "Dart"],
+            "license": "https://opensource.org/license/isc-license-txt",
+            "author": { "@id": "#derrick" }
+          },
+          {
+            "@type": "Person",
+            "@id": "#derrick",
+            "name": "Derrick MUGISHA",
+            "url": "https://github.com/Derrick-MUGISHA"
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
