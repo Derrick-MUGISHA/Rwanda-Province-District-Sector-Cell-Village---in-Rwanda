@@ -122,6 +122,9 @@ jobs:
         with:
           packages-dir: python/dist/
           password: ${{ secrets.PYPI_API_TOKEN }}
+          # Make full-workflow re-runs safe after a partial failure: an
+          # already-uploaded version is not an error.
+          skip-existing: true
 
   maven:
     needs: validate-input
