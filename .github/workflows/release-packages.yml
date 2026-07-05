@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Release version (example: 1.1.0)"
+        description: "Version number only, no prefix (example: 1.1.0)"
         required: true
         type: string
       publish_npm:
@@ -31,8 +31,24 @@ concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
 
+# Reusable guard: every job sources this first so a malformed version input
+# (e.g. "v1.1.0" or "version 1.1.0") fails fast with one clear message.
+env:
+  RELEASE_VERSION: ${{ inputs.version }}
+
 jobs:
+  validate-input:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check version format
+        run: |
+          [[ "$RELEASE_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+([-.][0-9A-Za-z.]+)?$ ]] || {
+            echo "::error::Invalid version input '$RELEASE_VERSION'. Enter the number only, e.g. 1.1.0 (no 'v', no 'version')."
+            exit 1
+          }
+
   npm:
+    needs: validate-input
     if: ${{ inputs.publish_npm }}
     runs-on: ubuntu-latest
     permissions:
@@ -54,6 +70,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   npm-github:
+    needs: validate-input
     if: ${{ inputs.publish_npm }}
     runs-on: ubuntu-latest
     permissions:
@@ -81,6 +98,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   python:
+    needs: validate-input
     if: ${{ inputs.publish_python }}
     runs-on: ubuntu-latest
     steps:
@@ -106,6 +124,7 @@ jobs:
           password: ${{ secrets.PYPI_API_TOKEN }}
 
   maven:
+    needs: validate-input
     if: ${{ inputs.publish_maven }}
     runs-on: ubuntu-latest
     steps:
@@ -123,8 +142,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    needs: [npm, npm-github, python, maven]
-    if: ${{ always() && (needs.npm.result == 'success' || needs.npm.result == 'skipped') && (needs.npm-github.result == 'success' || needs.npm-github.result == 'skipped') && (needs.python.result == 'success' || needs.python.result == 'skipped') && (needs.maven.result == 'success' || needs.maven.result == 'skipped') }}
+    needs: [validate-input, npm, npm-github, python, maven]
+    if: ${{ always() && needs.validate-input.result == 'success' && (needs.npm.result == 'success' || needs.npm.result == 'skipped') && (needs.npm-github.result == 'success' || needs.npm-github.result == 'skipped') && (needs.python.result == 'success' || needs.python.result == 'skipped') && (needs.maven.result == 'success' || needs.maven.result == 'skipped') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
