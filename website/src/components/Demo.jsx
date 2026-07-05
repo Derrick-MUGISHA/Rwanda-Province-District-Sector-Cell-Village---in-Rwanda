@@ -229,7 +229,7 @@ function SearchCard() {
           onChange={(e) => setQuery(e.target.value)}
           className="h-10 w-full rounded-md border border-leafline bg-white px-3 text-sm text-inkbody shadow-sm placeholder:text-forest/60 hover:border-sundeep focus:outline-none focus-visible:ring-2 focus-visible:ring-sun"
         />
-        <p className="mt-2.5 mb-0 flex flex-wrap items-center gap-1.5 text-[0.85rem] text-forest">
+        <p className=" p-4 mt-2.5 mb-5 flex flex-wrap items-center gap-1.5 text-[0.85rem] text-forest">
           Try:
           {SEARCH_EXAMPLES.map((example) => (
             <button
