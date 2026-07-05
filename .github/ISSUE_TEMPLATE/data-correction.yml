@@ -1,0 +1,58 @@
+name: Data correction
+description: Report a wrong, missing, or outdated province/district/sector/cell/village.
+title: "[data] "
+labels: ["data-correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you! Corrections from people who know these places are what keep
+        this dataset trustworthy. Please fill in what you can — partial
+        reports are welcome too.
+  - type: dropdown
+    id: level
+    attributes:
+      label: Administrative level
+      options:
+        - Village
+        - Cell
+        - Sector
+        - District
+        - Province
+    validations:
+      required: true
+  - type: dropdown
+    id: problem
+    attributes:
+      label: Type of problem
+      options:
+        - Misspelled name
+        - Missing entirely
+        - Wrong parent (e.g. village under the wrong cell)
+        - No longer exists / merged / renamed by boundary reform
+        - Wrong NISR code
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: Affected entry
+      description: Name and, if known, the NISR code or dataset id.
+      placeholder: "Village Iterambere, code 11010103, in Cell Akabahizi, Sector Gitega, Nyarugenge"
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: What should it be instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reference
+    attributes:
+      label: Official reference
+      description: |
+        A NISR/MINALOC publication, official gazette entry, or local government
+        source that confirms the correction. Corrections without an official
+        reference may stay open until one is found.

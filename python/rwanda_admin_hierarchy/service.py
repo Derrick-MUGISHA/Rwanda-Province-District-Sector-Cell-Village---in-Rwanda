@@ -23,6 +23,30 @@ def get_dataset() -> dict[str, Any]:
   return load_dataset()
 
 
+def get_data_meta() -> dict[str, Any]:
+  dataset = load_dataset()
+  counts = {"provinces": 0, "districts": 0, "sectors": 0, "cells": 0, "villages": 0}
+  for province in dataset.get("provinces", []):
+    counts["provinces"] += 1
+    for district in province.get("districts", []):
+      counts["districts"] += 1
+      for sector in district.get("sectors", []):
+        counts["sectors"] += 1
+        for cell in sector.get("cells", []):
+          counts["cells"] += 1
+          counts["villages"] += len(cell.get("villages", []))
+  return {
+    "country": dataset.get("country"),
+    "version": dataset.get("version"),
+    "dataVersion": dataset.get("dataVersion"),
+    "source": dataset.get("source"),
+    "sourceDate": dataset.get("sourceDate"),
+    "license": dataset.get("license"),
+    "codeStandard": dataset.get("codeStandard"),
+    "counts": counts,
+  }
+
+
 def get_provinces() -> list[dict[str, Any]]:
   return load_dataset().get("provinces", [])
 

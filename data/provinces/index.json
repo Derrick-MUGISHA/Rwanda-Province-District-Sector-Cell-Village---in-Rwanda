@@ -1,0 +1,36 @@
+{
+  "country": "Rwanda",
+  "version": "1.0.0",
+  "dataVersion": "2019-07",
+  "source": "National Institute of Statistics of Rwanda (NISR) — List of Villages (List_of_Villages_for_all_technology.pdf, created 2019-07-03)",
+  "sourceDate": "2019-07-03",
+  "license": "CC-BY-4.0",
+  "codeStandard": "code fields follow NISR administrative codes; provinces additionally carry ISO 3166-2:RW codes",
+  "provinces": [
+    {
+      "id": "province-umujyi-wa-kigali",
+      "name": "Umujyi wa Kigali",
+      "file": "umujyi-wa-kigali.json"
+    },
+    {
+      "id": "province-amajyepfo",
+      "name": "Amajyepfo",
+      "file": "amajyepfo.json"
+    },
+    {
+      "id": "province-iburengerazuba",
+      "name": "Iburengerazuba",
+      "file": "iburengerazuba.json"
+    },
+    {
+      "id": "province-amajyaruguru",
+      "name": "Amajyaruguru",
+      "file": "amajyaruguru.json"
+    },
+    {
+      "id": "province-iburasirazuba",
+      "name": "Iburasirazuba",
+      "file": "iburasirazuba.json"
+    }
+  ]
+}

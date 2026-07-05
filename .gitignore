@@ -7,3 +7,5 @@ java-mvn/target/
 python/dist/
 python/build/
 python/*.egg-info/
+exports/
+__pycache__/

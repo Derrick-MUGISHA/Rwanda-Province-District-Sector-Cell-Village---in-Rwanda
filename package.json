@@ -10,22 +10,30 @@
       "default": "./src/index.js"
     },
     "./data": "./data/rwanda-administrative.json",
+    "./data/provinces/*.json": "./data/provinces/*.json",
+    "./changes": "./data/changes.json",
     "./package.json": "./package.json"
   },
   "files": [
     "data/rwanda-administrative.json",
+    "data/changes.json",
+    "data/provinces",
     "src/index.js",
     "src/index.d.ts",
     "src/data-store.js",
     "src/server.js",
     "README.md",
-    "TECHNICAL_DOCUMENTATION.md"
+    "TECHNICAL_DOCUMENTATION.md",
+    "LICENSE-DATA"
   ],
   "scripts": {
-    "build:data": "node scripts/build-json-from-pdf.js",
+    "build:data": "node scripts/build-json-from-pdf.js && npm run sync:data && npm run split:data",
     "start": "node src/server.js",
     "test": "node --test",
-    "validate:data": "node scripts/validate-data.js",
+    "validate:data": "node scripts/validate-data.js && node scripts/sync-data.js --check",
+    "sync:data": "node scripts/sync-data.js",
+    "split:data": "node scripts/split-data.js",
+    "export:data": "node scripts/export-flat.js",
     "prepack": "npm run validate:data && npm test"
   },
   "repository": {
@@ -43,7 +51,17 @@
     "village",
     "geodata",
     "dataset",
-    "kigali"
+    "kigali",
+    "nisr",
+    "umudugudu",
+    "imirenge",
+    "akagari",
+    "iso-3166",
+    "address-validation",
+    "address-form",
+    "location-picker",
+    "east-africa",
+    "africa"
   ],
   "author": "Derrick Mugisha (https://github.com/Derrick-MUGISHA)",
   "license": "ISC",

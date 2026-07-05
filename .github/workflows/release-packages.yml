@@ -49,6 +49,33 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+  npm-github:
+    if: ${{ inputs.publish_npm }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://npm.pkg.github.com"
+          cache: npm
+      - run: npm ci
+      - run: npm version ${{ inputs.version }} --no-git-tag-version
+      # GitHub Packages requires the scope to match the repository owner.
+      - run: |
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.name = '@derrick-mugisha/rwanda-admin-hierarchy';
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   python:
     if: ${{ inputs.publish_python }}
     runs-on: ubuntu-latest
@@ -86,11 +113,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    needs: [npm, python, maven]
-    if: ${{ always() && (needs.npm.result == 'success' || needs.npm.result == 'skipped') && (needs.python.result == 'success' || needs.python.result == 'skipped') && (needs.maven.result == 'success' || needs.maven.result == 'skipped') }}
+    needs: [npm, npm-github, python, maven]
+    if: ${{ always() && (needs.npm.result == 'success' || needs.npm.result == 'skipped') && (needs.npm-github.result == 'success' || needs.npm-github.result == 'skipped') && (needs.python.result == 'success' || needs.python.result == 'skipped') && (needs.maven.result == 'success' || needs.maven.result == 'skipped') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Generate CSV/SQL/SQLite exports
+        run: npm run export:data
       - name: Create git tag
         run: |
           git tag v${{ inputs.version }}
@@ -101,3 +135,9 @@ jobs:
           tag_name: v${{ inputs.version }}
           name: v${{ inputs.version }}
           generate_release_notes: true
+          files: |
+            exports/villages.csv
+            exports/rwanda.sql
+            exports/rwanda.sqlite
+            data/rwanda-administrative.json
+            data/changes.json

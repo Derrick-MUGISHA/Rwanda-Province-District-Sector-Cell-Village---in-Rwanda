@@ -1,5 +1,6 @@
 from .service import (
     get_dataset,
+    get_data_meta,
     get_provinces,
     get_districts_by_province_id,
     get_sectors_by_district_id,
@@ -10,6 +11,7 @@ from .service import (
 
 __all__ = [
     "get_dataset",
+    "get_data_meta",
     "get_provinces",
     "get_districts_by_province_id",
     "get_sectors_by_district_id",

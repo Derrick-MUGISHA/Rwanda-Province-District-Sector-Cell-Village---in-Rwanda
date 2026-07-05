@@ -7,6 +7,18 @@ This project provides a structured dataset and API for Rwanda administrative lev
 
 `Country -> Province -> District -> Sector -> Cell -> Village`
 
+**5 provinces · 30 districts · 416 sectors · 2,142 cells · 14,816 villages** —
+sourced from the official NISR "List of Villages", with NISR codes at every
+level, ISO 3166-2 province codes, name search, and address validation.
+Available for [Node.js](https://www.npmjs.com/package/@derrick63/rwanda-admin-hierarchy),
+[Python](https://pypi.org/project/rwanda-admin-hierarchy/), Java (GitHub
+Packages), and Flutter (`dart/`), plus CSV/SQL/SQLite exports on every release.
+
+The code is ISC-licensed; the dataset is licensed [CC BY 4.0](./LICENSE-DATA).
+Wrong or missing place? Please
+[open a data-correction issue](../../issues/new/choose) — local knowledge keeps
+this dataset trustworthy. See [CONTRIBUTING.md](./CONTRIBUTING.md).
+
 ## Install
 
 ```bash
@@ -142,6 +154,22 @@ Default server URL:
 
 `GET /api/cells/:cellId/villages`
 
+### Search by name (any level)
+
+`GET /api/search?q=gitega&levels=sector,cell&limit=10`
+
+Case-, diacritic-insensitive and typo-tolerant. `levels` and `limit` are optional.
+
+### Reverse lookup (full ancestor chain)
+
+`GET /api/path/:id` — e.g. `/api/path/village-11010103`
+
+### Validate an address hierarchy
+
+`GET /api/validate?province=Kigali&district=Nyarugenge&sector=Gitega`
+
+Each level accepts an ID, an NISR/ISO code, or a name. Returns `{ valid, errors, match }`.
+
 ## Use as a Package
 
 This repository can also be used as a Node package (CommonJS).
@@ -150,17 +178,44 @@ Example usage:
 
 ```js
 const {
-  getDataset,
   getProvinces,
   getDistrictsByProvinceId,
+  search,
+  getPath,
+  getByCode,
+  isValidHierarchy,
 } = require("@derrick63/rwanda-admin-hierarchy");
 
-const dataset = getDataset();
+// Top-down traversal
 const provinces = getProvinces();
 const districts = getDistrictsByProvinceId("province-umujyi-wa-kigali");
+
+// Name search — case-, diacritic-insensitive and typo-tolerant
+search("gítega");                        // matches "Gitega" at any level
+search("Gitegga", { levels: ["sector"] }); // misspellings still match
+
+// Reverse lookup: village -> cell -> sector -> district -> province
+const path = getPath("village-11010103");
+// path.province.name === "Umujyi wa Kigali", path.sector.name === "Gitega", ...
+
+// Standard codes: NISR administrative codes and ISO 3166-2
+getByCode("RW-01");    // City of Kigali (ISO 3166-2:RW)
+getByCode("11");       // Nyarugenge district (NISR code)
+getByCode("11010103"); // village by its 8-digit NISR code
+
+// Address/form validation — accepts names, ids, or codes at each level
+isValidHierarchy({
+  province: "Kigali",
+  district: "Nyarugenge",
+  sector: "Gitega",
+  cell: "Akabahizi",
+  village: "Iterambere",
+}); // true
 ```
 
 Exported package functions:
+
+Hierarchy traversal:
 - `getDataset()`
 - `getProvinces()`
 - `getDistrictsByProvinceId(provinceId)`
@@ -168,6 +223,45 @@ Exported package functions:
 - `getCellsBySectorId(sectorId)`
 - `getVillagesByCellId(cellId)`
 - `loadDataset()`
+
+Flat accessors (dropdowns, validation lists):
+- `getAllDistricts()`, `getAllSectors()`, `getAllCells()`, `getAllVillages()`
+
+Search and lookup:
+- `search(query, { levels?, limit?, fuzzy? })` — fuzzy name search across all levels; every result includes its full ancestor `path`
+- `getById(id)` — resolve any ID at any level
+- `getByCode(code)` — resolve NISR codes (`"11"`, `"1101"`, `"11010103"`) and ISO 3166-2 province codes (`"RW-01"`)
+- `getPath(id)` — reverse lookup / ancestry for any ID
+
+Validation:
+- `isValidHierarchy(parts)` — boolean check that the given levels form one consistent chain
+- `validateHierarchy(parts)` — same, but returns `{ valid, errors, match }`
+
+Provenance and migrations:
+- `getDataMeta()` — dataset provenance (`dataVersion`, `source`, `license`) and per-level counts
+- `resolveId(oldId)` — resolves ids from previous dataset versions via the migration map
+- `getIdChanges()` — the raw migration history (`data/changes.json`)
+
+### Standard codes
+
+Every node carries a `code` field with its official NISR administrative code,
+derived from the village codes in the source dataset:
+
+| Level | Code format | Example |
+| --- | --- | --- |
+| Province | 1 digit | `1` (Kigali City) |
+| District | 2 digits | `11` (Nyarugenge) |
+| Sector | 4 digits | `1101` (Gitega) |
+| Cell | 6 digits | `110101` (Akabahizi) |
+| Village | 8 digits | `11010103` (Iterambere) |
+
+Provinces additionally carry:
+- `isoCode` — the ISO 3166-2:RW subdivision code (`RW-01` … `RW-05`)
+- `nameVariants` — common English/French names (`"City of Kigali"`, `"Southern Province"`, …), which `search()` also matches
+
+Note: a few cells in the source PDF merge official NISR "I"/"II" cell pairs
+(e.g. Munanira I/II); those cells have `code: null` because no single official
+code applies.
 
 TypeScript definitions are bundled (`src/index.d.ts`), so all functions and the
 dataset shape are fully typed out of the box.
@@ -178,10 +272,47 @@ The raw JSON dataset can also be imported directly:
 const dataset = require("@derrick63/rwanda-admin-hierarchy/data");
 ```
 
+Browser or serverless code that only needs one province can lazy-load a slice
+(~230–760 KB instead of the full dataset):
+
+```js
+const kigali = require("@derrick63/rwanda-admin-hierarchy/data/provinces/umujyi-wa-kigali.json");
+// data/provinces/index.json lists all five slices
+```
+
 Build npm tarball locally:
 
 ```bash
 npm pack
+```
+
+### Dataset versioning and id migrations
+
+The data snapshot is versioned independently of the package: `getDataMeta()`
+returns `dataVersion` (currently `2019-07`, the NISR source publication date).
+When a rebuild removes or renames a node id, the migration is recorded in
+`data/changes.json` and old ids keep resolving:
+
+```js
+const { resolveId } = require("@derrick63/rwanda-admin-hierarchy");
+resolveId("province-umujyi-wa-kigali-district-nyarugenge-sector-mageragere");
+// -> "province-umujyi-wa-kigali-district-nyarugenge-sector-mageregere"
+```
+
+### Electrification (NEP) categories
+
+Each village carries the National Electrification Plan category from the
+source document as `nep`: `"GE"` (grid extension), `"SAS"` (standalone solar),
+or `"Microgrid"`.
+
+### Flat exports (CSV / SQL / SQLite)
+
+Analysts and non-JS users can grab flat files from every GitHub release —
+`villages.csv` (one denormalized row per village), `rwanda.sql` (portable
+schema + inserts), and `rwanda.sqlite` — or generate them locally:
+
+```bash
+npm run export:data   # writes exports/
 ```
 
 ## Use as a Maven Package (Java)
@@ -312,6 +443,21 @@ If an ID is not found, the API returns:
 ```
 
 (Message varies by level: Province, District, Sector, or Cell.)
+
+## Use as a Flutter Package
+
+A Flutter package with the same dataset lives in `dart/`
+(`rwanda_admin_hierarchy`). It bundles the JSON as an asset and exposes typed
+models with the same traversal API:
+
+```dart
+import 'package:rwanda_admin_hierarchy/rwanda_admin_hierarchy.dart';
+
+final rwanda = await RwandaAdminHierarchy.load();
+final districts = rwanda.districtsByProvinceId('province-umujyi-wa-kigali');
+```
+
+It is not yet published to pub.dev; see `dart/README.md`.
 
 ## Data and Logic Separation
 

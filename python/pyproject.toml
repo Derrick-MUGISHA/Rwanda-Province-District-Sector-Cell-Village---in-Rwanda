@@ -12,7 +12,10 @@ license = "ISC"
 authors = [
   { name = "Derrick MUGISHA" }
 ]
-keywords = ["rwanda", "administrative", "province", "district", "sector", "cell", "village"]
+keywords = [
+  "rwanda", "administrative", "province", "district", "sector", "cell", "village",
+  "nisr", "umudugudu", "iso-3166", "address-validation", "east-africa", "geodata", "dataset",
+]
 classifiers = [
   "Programming Language :: Python :: 3",
   "Operating System :: OS Independent"
