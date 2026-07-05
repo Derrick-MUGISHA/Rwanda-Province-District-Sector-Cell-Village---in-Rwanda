@@ -31,3 +31,38 @@ dataset = get_dataset()
 provinces = get_provinces()
 districts = get_districts_by_province_id("province-umujyi-wa-kigali")
 ```
+
+## FastAPI integration
+
+```bash
+pip install "rwanda-admin-hierarchy[fastapi]"
+```
+
+```python
+from fastapi import FastAPI
+from rwanda_admin_hierarchy.integrations.fastapi import create_router
+
+app = FastAPI()
+app.include_router(create_router(), prefix="/api/rwanda")
+```
+
+## Django integration
+
+```bash
+pip install "rwanda-admin-hierarchy[django]"
+```
+
+```python
+# urls.py
+from django.urls import include, path
+
+urlpatterns = [
+    path("api/rwanda/", include("rwanda_admin_hierarchy.integrations.django")),
+]
+```
+
+Both integrations expose the same read-only endpoints relative to the mount
+point: `meta`, `provinces`, `provinces/<id>/districts`,
+`districts/<id>/sectors`, `sectors/<id>/cells` and `cells/<id>/villages`.
+List responses omit child collections so they stay small enough for
+dropdowns; unknown ids return HTTP 404.

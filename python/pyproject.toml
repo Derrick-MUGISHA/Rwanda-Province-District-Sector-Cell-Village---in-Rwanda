@@ -21,6 +21,10 @@ classifiers = [
   "Operating System :: OS Independent"
 ]
 
+[project.optional-dependencies]
+fastapi = ["fastapi>=0.100"]
+django = ["django>=4.2"]
+
 [tool.setuptools]
 include-package-data = true
 
