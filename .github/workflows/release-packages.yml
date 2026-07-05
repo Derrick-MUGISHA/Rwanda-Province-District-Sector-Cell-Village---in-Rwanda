@@ -161,15 +161,26 @@ jobs:
       # Make full-workflow re-runs safe after a partial failure: GitHub
       # Packages rejects re-deploying an existing version with a 409, so
       # only build (tests still run) when the version is already there.
+      # The registry itself does not return a plain 200 for artifact GETs,
+      # so ask the Packages REST API for the published version list, and as
+      # a last resort treat a 409 from the deploy itself as already-published.
       - name: Deploy to GitHub Packages (skip if version already exists)
         run: |
-          pom_url="https://maven.pkg.github.com/${{ github.repository }}/io/github/derickmugisha/rwanda-admin-hierarchy/$RELEASE_VERSION/rwanda-admin-hierarchy-$RELEASE_VERSION.pom"
-          status="$(curl -sS -o /dev/null -w '%{http_code}' -u "$GITHUB_ACTOR:$GITHUB_TOKEN" "$pom_url")"
-          if [ "$status" = "200" ]; then
+          set -o pipefail
+          versions_url="https://api.github.com/users/${{ github.repository_owner }}/packages/maven/io.github.derickmugisha.rwanda-admin-hierarchy/versions?per_page=100"
+          published="$(curl -sS -H "Authorization: Bearer $GITHUB_TOKEN" "$versions_url" | jq -r 'if type == "array" then .[].name else empty end' || true)"
+          echo "Published versions:" $published
+          if printf '%s\n' "$published" | grep -Fqx "$RELEASE_VERSION"; then
             echo "rwanda-admin-hierarchy $RELEASE_VERSION is already on GitHub Packages — building without deploy."
             mvn -f java-mvn/pom.xml -B -Drevision="$RELEASE_VERSION" clean verify
-          else
-            mvn -f java-mvn/pom.xml -B -Drevision="$RELEASE_VERSION" clean deploy
+            exit 0
+          fi
+          if ! mvn -f java-mvn/pom.xml -B -Drevision="$RELEASE_VERSION" clean deploy 2>&1 | tee mvn-deploy.log; then
+            if grep -q 'status code: 409' mvn-deploy.log; then
+              echo "Registry answered 409 Conflict — version already exists, treating as published."
+              exit 0
+            fi
+            exit 1
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
