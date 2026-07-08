@@ -7,7 +7,7 @@ const canonical = path.join(repoRoot, "data", "rwanda-administrative.json");
 // Copies of the canonical dataset bundled by the other language packages.
 // (The Java package copies straight from data/ at build time via Maven.)
 const copies = [
-  path.join(repoRoot, "python", "rwanda_admin_hierarchy", "rwanda_administrative.json"),
+  path.join(repoRoot, "python", "rwanda_admin", "rwanda_administrative.json"),
   path.join(repoRoot, "dart", "lib", "src", "rwanda_administrative.json"),
 ];
 

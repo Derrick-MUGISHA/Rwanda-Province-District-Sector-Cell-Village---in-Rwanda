@@ -1,4 +1,4 @@
-name: rwanda_admin_hierarchy
+name: rwanda_admin
 description: >-
   Complete Rwanda administrative hierarchy dataset (Province > District >
   Sector > Cell > Village) with NISR codes, bundled as a Flutter package.

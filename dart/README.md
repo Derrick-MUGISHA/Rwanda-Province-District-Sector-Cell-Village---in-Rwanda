@@ -1,9 +1,9 @@
-# rwanda_admin_hierarchy (Flutter)
+# rwanda_admin (Flutter)
 
 Complete Rwanda administrative hierarchy — Province › District › Sector ›
 Cell › Village — bundled as a Flutter package. Same dataset as the
-[npm](https://www.npmjs.com/package/@derrick63/rwanda-admin-hierarchy),
-[PyPI](https://pypi.org/project/rwanda-admin-hierarchy/), and Maven packages.
+[npm](https://www.npmjs.com/package/rwanda-admin),
+[PyPI](https://pypi.org/project/rwanda-admin/), and Maven packages.
 
 - 5 provinces · 30 districts · 416 sectors · 2,142 cells · 14,816 villages
 - Sourced from the official NISR "List of Villages" (snapshot in `dataVersion`)
@@ -12,7 +12,7 @@ Cell › Village — bundled as a Flutter package. Same dataset as the
 ## Usage
 
 ```dart
-import 'package:rwanda_admin_hierarchy/rwanda_admin_hierarchy.dart';
+import 'package:rwanda_admin/rwanda_admin.dart';
 
 final rwanda = await RwandaAdminHierarchy.load();
 

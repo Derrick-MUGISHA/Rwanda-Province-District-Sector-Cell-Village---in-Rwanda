@@ -3,7 +3,7 @@
 Usage:
 
     from fastapi import FastAPI
-    from rwanda_admin_hierarchy.integrations.fastapi import create_router
+    from rwanda_admin.integrations.fastapi import create_router
 
     app = FastAPI()
     app.include_router(create_router(), prefix="/api/rwanda")
@@ -27,7 +27,7 @@ def create_router(**router_kwargs: Any):
     from fastapi import APIRouter, HTTPException
   except ImportError as exc:  # pragma: no cover
     raise ImportError(
-      'FastAPI is not installed. Run: pip install "rwanda-admin-hierarchy[fastapi]"'
+      'FastAPI is not installed. Run: pip install "rwanda-admin[fastapi]"'
     ) from exc
 
   router = APIRouter(**router_kwargs)

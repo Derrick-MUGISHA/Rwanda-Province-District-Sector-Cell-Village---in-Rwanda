@@ -10,10 +10,10 @@ export const STACKS = [
 ];
 
 export const INSTALL_COMMANDS = {
-  js: "npm install @derrick63/rwanda-admin-hierarchy",
-  python: 'pip install "rwanda-admin-hierarchy[fastapi]"',
-  java: "io.github.derickmugisha:rwanda-admin-hierarchy:1.3.0",
-  dart: "flutter pub add rwanda_admin_hierarchy --git-url=https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda.git --git-path=dart",
+  js: "npm install rwanda-admin",
+  python: 'pip install "rwanda-admin[fastapi]"',
+  java: "io.github.derickmugisha:rwanda-admin:1.3.0",
+  dart: "flutter pub add rwanda_admin --git-url=https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda.git --git-path=dart",
 };
 
 const StackContext = createContext(["js", () => {}]);

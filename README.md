@@ -1,6 +1,6 @@
 # Rwanda Administrative Hierarchy API
 
-[![npm version](https://img.shields.io/npm/v/@derrick63/rwanda-admin-hierarchy)](https://www.npmjs.com/package/@derrick63/rwanda-admin-hierarchy)
+[![npm version](https://img.shields.io/npm/v/rwanda-admin)](https://www.npmjs.com/package/rwanda-admin)
 [![license](https://img.shields.io/badge/license-ISC-blue.svg)](./LICENSE)
 
 This project provides a structured dataset and API for Rwanda administrative levels:
@@ -10,8 +10,8 @@ This project provides a structured dataset and API for Rwanda administrative lev
 **5 provinces · 30 districts · 416 sectors · 2,142 cells · 14,816 villages** —
 sourced from the official NISR "List of Villages", with NISR codes at every
 level, ISO 3166-2 province codes, name search, and address validation.
-Available for [Node.js](https://www.npmjs.com/package/@derrick63/rwanda-admin-hierarchy),
-[Python](https://pypi.org/project/rwanda-admin-hierarchy/), Java (GitHub
+Available for [Node.js](https://www.npmjs.com/package/rwanda-admin),
+[Python](https://pypi.org/project/rwanda-admin/), Java (GitHub
 Packages), and Flutter (`dart/`), plus CSV/SQL/SQLite exports on every release.
 
 The code is ISC-licensed; the dataset is licensed [CC BY 4.0](./LICENSE-DATA).
@@ -22,7 +22,7 @@ this dataset trustworthy. See [CONTRIBUTING.md](./CONTRIBUTING.md).
 ## Install
 
 ```bash
-npm install @derrick63/rwanda-admin-hierarchy
+npm install rwanda-admin
 ```
 
 The published package is a **zero-dependency** data library with bundled TypeScript
@@ -184,7 +184,7 @@ const {
   getPath,
   getByCode,
   isValidHierarchy,
-} = require("@derrick63/rwanda-admin-hierarchy");
+} = require("rwanda-admin");
 
 // Top-down traversal
 const provinces = getProvinces();
@@ -249,7 +249,7 @@ same package works in React, Vue, Svelte or plain browser apps built with
 Vite, webpack or Next.js. TypeScript definitions ship with the package.
 
 ```jsx
-import { getProvinces, getDistrictsByProvinceId, search } from "@derrick63/rwanda-admin-hierarchy";
+import { getProvinces, getDistrictsByProvinceId, search } from "rwanda-admin";
 
 function ProvincePicker({ onSelect }) {
   return (
@@ -265,7 +265,7 @@ function ProvincePicker({ onSelect }) {
 Bundle-size note: importing the API inlines the full dataset (~3.1 MB raw,
 ~340 KB gzipped over the wire). If that is too heavy for your app, either
 lazy-load your route with `React.lazy`/dynamic `import()`, import only the
-per-province JSON you need (`@derrick63/rwanda-admin-hierarchy/data/provinces/umujyi-wa-kigali.json`),
+per-province JSON you need (`rwanda-admin/data/provinces/umujyi-wa-kigali.json`),
 or keep the package on the server and expose it through the bundled Express
 API (`npm start`) or your own backend.
 
@@ -296,14 +296,14 @@ dataset shape are fully typed out of the box.
 The raw JSON dataset can also be imported directly:
 
 ```js
-const dataset = require("@derrick63/rwanda-admin-hierarchy/data");
+const dataset = require("rwanda-admin/data");
 ```
 
 Browser or serverless code that only needs one province can lazy-load a slice
 (~230–760 KB instead of the full dataset):
 
 ```js
-const kigali = require("@derrick63/rwanda-admin-hierarchy/data/provinces/umujyi-wa-kigali.json");
+const kigali = require("rwanda-admin/data/provinces/umujyi-wa-kigali.json");
 // data/provinces/index.json lists all five slices
 ```
 
@@ -321,7 +321,7 @@ When a rebuild removes or renames a node id, the migration is recorded in
 `data/changes.json` and old ids keep resolving:
 
 ```js
-const { resolveId } = require("@derrick63/rwanda-admin-hierarchy");
+const { resolveId } = require("rwanda-admin");
 resolveId("province-umujyi-wa-kigali-district-nyarugenge-sector-mageragere");
 // -> "province-umujyi-wa-kigali-district-nyarugenge-sector-mageregere"
 ```
@@ -354,7 +354,7 @@ mvn -f java-mvn/pom.xml clean package
 
 The JAR will be created in:
 
-`java-mvn/target/rwanda-admin-hierarchy-1.0.0.jar`
+`java-mvn/target/rwanda-admin-1.0.0.jar`
 
 ### Install to your local Maven repository
 
@@ -367,7 +367,7 @@ mvn -f java-mvn/pom.xml clean install
 ```xml
 <dependency>
   <groupId>io.github.derickmugisha</groupId>
-  <artifactId>rwanda-admin-hierarchy</artifactId>
+  <artifactId>rwanda-admin</artifactId>
   <version>1.0.0</version>
 </dependency>
 ```
@@ -408,7 +408,7 @@ python3 -m pip install python/dist/*.whl
 ### Python usage example
 
 ```python
-from rwanda_admin_hierarchy import get_provinces, get_districts_by_province_id
+from rwanda_admin import get_provinces, get_districts_by_province_id
 
 provinces = get_provinces()
 districts = get_districts_by_province_id("province-umujyi-wa-kigali")
@@ -474,11 +474,11 @@ If an ID is not found, the API returns:
 ## Use as a Flutter Package
 
 A Flutter package with the same dataset lives in `dart/`
-(`rwanda_admin_hierarchy`). It bundles the JSON as an asset and exposes typed
+(`rwanda_admin`). It bundles the JSON as an asset and exposes typed
 models with the same traversal API:
 
 ```dart
-import 'package:rwanda_admin_hierarchy/rwanda_admin_hierarchy.dart';
+import 'package:rwanda_admin/rwanda_admin.dart';
 
 final rwanda = await RwandaAdminHierarchy.load();
 final districts = rwanda.districtsByProvinceId('province-umujyi-wa-kigali');

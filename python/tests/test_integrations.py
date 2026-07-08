@@ -17,7 +17,7 @@ except ImportError:
 
 class SummarizeTests(unittest.TestCase):
     def test_strips_child_collections(self):
-        from rwanda_admin_hierarchy.integrations import summarize
+        from rwanda_admin.integrations import summarize
 
         node = {"id": "x", "name": "X", "code": "1", "districts": [{"id": "d"}]}
         self.assertEqual(summarize(node), {"id": "x", "name": "X", "code": "1"})
@@ -30,7 +30,7 @@ class FastAPIIntegrationTests(unittest.TestCase):
         super().setUpClass()
         from fastapi import FastAPI
 
-        from rwanda_admin_hierarchy.integrations.fastapi import create_router
+        from rwanda_admin.integrations.fastapi import create_router
 
         app = FastAPI()
         app.include_router(create_router(), prefix="/rw")
@@ -66,7 +66,7 @@ class DjangoIntegrationTests(unittest.TestCase):
             settings.configure(
                 DEBUG=True,
                 ALLOWED_HOSTS=["testserver"],
-                ROOT_URLCONF="rwanda_admin_hierarchy.integrations.django",
+                ROOT_URLCONF="rwanda_admin.integrations.django",
             )
             django.setup()
         from django.test import Client

@@ -3,8 +3,8 @@
 The base package has no dependencies. These modules wire the dataset into a
 framework you already use; install the matching extra:
 
-    pip install "rwanda-admin-hierarchy[fastapi]"
-    pip install "rwanda-admin-hierarchy[django]"
+    pip install "rwanda-admin[fastapi]"
+    pip install "rwanda-admin[django]"
 """
 
 from __future__ import annotations

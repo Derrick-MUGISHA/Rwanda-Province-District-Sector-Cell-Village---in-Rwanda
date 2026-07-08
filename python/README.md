@@ -21,7 +21,7 @@ Run from the `python` directory.
 ## Usage
 
 ```python
-from rwanda_admin_hierarchy import (
+from rwanda_admin import (
     get_dataset,
     get_provinces,
     get_districts_by_province_id,
@@ -35,12 +35,12 @@ districts = get_districts_by_province_id("province-umujyi-wa-kigali")
 ## FastAPI integration
 
 ```bash
-pip install "rwanda-admin-hierarchy[fastapi]"
+pip install "rwanda-admin[fastapi]"
 ```
 
 ```python
 from fastapi import FastAPI
-from rwanda_admin_hierarchy.integrations.fastapi import create_router
+from rwanda_admin.integrations.fastapi import create_router
 
 app = FastAPI()
 app.include_router(create_router(), prefix="/api/rwanda")
@@ -49,7 +49,7 @@ app.include_router(create_router(), prefix="/api/rwanda")
 ## Django integration
 
 ```bash
-pip install "rwanda-admin-hierarchy[django]"
+pip install "rwanda-admin[django]"
 ```
 
 ```python
@@ -57,7 +57,7 @@ pip install "rwanda-admin-hierarchy[django]"
 from django.urls import include, path
 
 urlpatterns = [
-    path("api/rwanda/", include("rwanda_admin_hierarchy.integrations.django")),
+    path("api/rwanda/", include("rwanda_admin.integrations.django")),
 ]
 ```
 

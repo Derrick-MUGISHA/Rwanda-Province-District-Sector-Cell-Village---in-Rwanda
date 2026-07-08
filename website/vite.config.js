@@ -12,6 +12,6 @@ export default defineConfig({
     preserveSymlinks: true,
   },
   optimizeDeps: {
-    include: ["@derrick63/rwanda-admin-hierarchy"],
+    include: ["rwanda-admin"],
   },
 });

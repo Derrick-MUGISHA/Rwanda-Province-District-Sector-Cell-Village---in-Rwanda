@@ -1,6 +1,6 @@
 // Splits the canonical dataset into one JSON file per province so browser and
 // serverless consumers can lazy-load a slice instead of the full ~3 MB file:
-//   require("@derrick63/rwanda-admin-hierarchy/data/provinces/umujyi-wa-kigali.json")
+//   require("rwanda-admin/data/provinces/umujyi-wa-kigali.json")
 const fs = require("fs");
 const path = require("path");
 

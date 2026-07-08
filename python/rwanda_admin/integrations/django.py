@@ -5,7 +5,7 @@ Usage (in your project's urls.py):
     from django.urls import include, path
 
     urlpatterns = [
-        path("api/rwanda/", include("rwanda_admin_hierarchy.integrations.django")),
+        path("api/rwanda/", include("rwanda_admin.integrations.django")),
     ]
 
 Endpoints (relative to the include): meta, provinces,
@@ -23,7 +23,7 @@ try:
   from django.views.decorators.http import require_GET
 except ImportError as exc:  # pragma: no cover
   raise ImportError(
-    'Django is not installed. Run: pip install "rwanda-admin-hierarchy[django]"'
+    'Django is not installed. Run: pip install "rwanda-admin[django]"'
   ) from exc
 
 from .. import service

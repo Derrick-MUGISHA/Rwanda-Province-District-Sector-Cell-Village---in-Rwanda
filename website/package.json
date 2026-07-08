@@ -1,5 +1,5 @@
 {
-  "name": "rwanda-admin-hierarchy-docs",
+  "name": "rwanda-admin-docs",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@derrick63/rwanda-admin-hierarchy": "file:..",
+    "rwanda-admin": "file:..",
     "@radix-ui/react-select": "^2.3.2",
     "@radix-ui/react-tabs": "^1.1.16",
     "@tailwindcss/vite": "^4.3.2",

@@ -1,6 +1,6 @@
 import unittest
 
-import rwanda_admin_hierarchy as r
+import rwanda_admin as r
 
 
 class ServiceTests(unittest.TestCase):

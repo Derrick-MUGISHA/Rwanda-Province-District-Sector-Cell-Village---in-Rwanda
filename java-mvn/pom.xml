@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.github.derickmugisha</groupId>
-  <artifactId>rwanda-admin-hierarchy</artifactId>
+  <artifactId>rwanda-admin</artifactId>
   <version>${revision}</version>
   <name>Rwanda Administrative Hierarchy</name>
   <description>Rwanda Province-District-Sector-Cell-Village dataset and Java access library.</description>

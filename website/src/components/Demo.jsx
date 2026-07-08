@@ -7,7 +7,7 @@ import {
   getVillagesByCellId,
   getPath,
   search,
-} from "@derrick63/rwanda-admin-hierarchy";
+} from "rwanda-admin";
 import CodeBlock, { CopyCommand } from "./CodeBlock.jsx";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card.jsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select.jsx";
@@ -37,7 +37,7 @@ const READOUTS = {
   python: {
     language: "python",
     filename: "picker_calls.py",
-    setup: ["from rwanda_admin_hierarchy import *", ""],
+    setup: ["from rwanda_admin import *", ""],
     call: (fn, id, count, noun) => `${fn.py}("${id}")  # ${count} ${noun}`,
     provinces: (n) => `get_provinces()  # ${n} provinces`,
     path: () => "# path lookup and search ship in the JS package today",
