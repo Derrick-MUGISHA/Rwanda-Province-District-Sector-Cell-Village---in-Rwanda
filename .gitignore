@@ -10,3 +10,6 @@ python/*.egg-info/
 exports/
 __pycache__/
 dart/.dart_tool/
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat

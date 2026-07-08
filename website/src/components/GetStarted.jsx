@@ -36,12 +36,12 @@ export default function GetStarted() {
         <p className="section-lead">
           Rwanda's territory is one tree: Intara (province) › Akarere (district) › Umurenge
           (sector) › Akagari (cell) › Umudugudu (village). Every function in this package is a
-          lookup into that tree. Follow the steps in order — each one builds on the last.
+          lookup into that tree. Follow the steps in order each one builds on the last.
         </p>
 
         <Step n={1} title="Install the package">
           <p>
-            One dependency, nothing else — the whole dataset ships inside it, so there are no API
+            One dependency, nothing else the whole dataset ships inside it, so there are no API
             keys and no network calls.
           </p>
           <p>
@@ -49,7 +49,7 @@ export default function GetStarted() {
           </p>
           <p className="step-aside">
             npm, yarn and pnpm all install the same package from the npm registry. Using
-            Python, Java or Flutter instead? The same steps apply — grab your install command
+            Python, Java or Flutter instead? The same steps apply grab your install command
             from the <a href="#stacks">integration guides</a> below.
           </p>
         </Step>
@@ -73,7 +73,7 @@ console.log(provinces.length); // 5`}
         <Step n={3} title="Drill down, level by level">
           <p>
             Every node's children are one call away. Feed the id a user selected into the next
-            level's function — that is the whole pattern behind a cascading address form:
+            level's function that is the whole pattern behind a cascading address form:
           </p>
           <CodeBlock
             language="javascript"
@@ -93,7 +93,7 @@ const villages = getVillagesByCellId(cells[0].id);
           />
           <p className="step-aside">
             The <a href="#demo">live demo</a> above is exactly this code wired to five{" "}
-            <code>&lt;select&gt;</code> elements — and it shows you the calls it makes as you
+            <code>&lt;select&gt;</code> elements and it shows you the calls it makes as you
             click.
           </p>
         </Step>
@@ -101,7 +101,7 @@ const villages = getVillagesByCellId(cells[0].id);
         <Step n={4} title="Validate what the user submitted">
           <p>
             Forms lie. <code>validateHierarchy()</code> checks that the submitted levels form one
-            consistent chain — and it accepts names, ids or NISR codes interchangeably. Here is a
+            consistent chain and it accepts names, ids or NISR codes interchangeably. Here is a
             plausible-looking address that is actually wrong (Gitega sector is in Nyarugenge, not
             Gasabo), caught with a precise error:
           </p>

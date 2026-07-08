@@ -155,14 +155,14 @@ function Picker({ stack }) {
     : null;
 
   return (
-    <Card>
+    <Card className="p-4shadow-amber-50 shadow-2xl">
       <CardHeader className="flex-row items-start justify-between">
         <div>
           <CardTitle>Pick a place, top down</CardTitle>
           <CardDescription>Five levels, each one call away.</CardDescription>
         </div>
         {selected.province && (
-          <Button variant="outline-light" size="sm" onClick={() => setSelected({})}>
+          <Button variant="outline-light" size="md" onClick={() => setSelected({})} className="border-sun bg-mist/70 px-4 py-1 font-bold text-sun hover:bg-sun hover:text-mist hover:border-sun">
             Reset
           </Button>
         )}
@@ -217,7 +217,7 @@ function SearchCard() {
       <CardHeader>
         <CardTitle>Or search any level</CardTitle>
         <CardDescription>
-          <strong className="font-display text-inkbody">Shakisha</strong> — case-, accent- and
+          <strong className="font-display text-inkbody">Shakisha</strong> case-, accent- and
           typo-tolerant across all 17,409 places.
         </CardDescription>
       </CardHeader>
@@ -229,7 +229,7 @@ function SearchCard() {
           onChange={(e) => setQuery(e.target.value)}
           className="h-10 w-full rounded-md border border-leafline bg-white px-3 text-sm text-inkbody shadow-sm placeholder:text-forest/60 hover:border-sundeep focus:outline-none focus-visible:ring-2 focus-visible:ring-sun"
         />
-        <p className=" p-4 mt-2.5 mb-5 flex flex-wrap items-center gap-1.5 text-[0.85rem] text-forest">
+        <p className="py-4 mt-2.5 mb-5 flex flex-wrap items-center gap-1.5 text-[0.85rem] text-forest">
           Try:
           {SEARCH_EXAMPLES.map((example) => (
             <button
@@ -294,11 +294,11 @@ export default function Demo() {
         <p className="eyebrow">Live demo</p>
         <h2>This page has all 14,816 villages in it</h2>
         <p className="section-lead">
-          Both widgets run entirely in your browser on the npm package — and the picker shows you
+          Both widgets run entirely in your browser on the npm package and the picker shows you
           its own source in the language you work in.
         </p>
 
-        <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-3">
+        <div className="mb-6 flex justify-between flex-wrap items-center gap-x-4 gap-y-3">
           <Tabs value={stack} onValueChange={setStack}>
             <TabsList aria-label="Show the code in your language">
               {STACKS.map(({ id, label }) => (

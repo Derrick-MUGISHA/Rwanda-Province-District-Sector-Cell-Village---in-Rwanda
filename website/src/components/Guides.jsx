@@ -14,7 +14,7 @@ function Part({ n, title, children }) {
         <span className="font-mono text-[0.95rem] font-semibold text-sundeep">{String(n).padStart(2, "0")}</span>
         {title}
       </h3>
-      <div className="max-w-[46rem] [&>p]:mb-3">{children}</div>
+      <div className="max-w-184 [&>p]:mb-3">{children}</div>
     </div>
   );
 }
@@ -63,7 +63,7 @@ function JsGuide() {
         </p>
         <p>
           The package is CommonJS with zero runtime dependencies and works unchanged in Node and
-          in browser bundlers (Vite, Next.js, webpack, CRA). The full dataset ships inside — no
+          in browser bundlers (Vite, Next.js, webpack, CRA). The full dataset ships inside no
           API key, no network, no async loading step.
         </p>
       </Part>
@@ -71,7 +71,7 @@ function JsGuide() {
       <Part n={2} title="Build the cascading address form">
         <p>
           The pattern: each level's options come from the id selected one level above, and
-          selecting a level clears everything below it. This component is complete — paste it
+          selecting a level clears everything below it. This component is complete paste it
           into your project and it works:
         </p>
         <CodeBlock
@@ -139,7 +139,7 @@ export default function AddressForm({ onSubmit }) {
         />
         <Callout kind="note">
           <p>
-            The <a href="#demo">live demo</a> at the top of this page is this exact pattern — and
+            The <a href="#demo">live demo</a> at the top of this page is this exact pattern and
             unknown ids return <code>null</code> rather than throwing, so a stale id from a saved
             draft can never crash the form.
           </p>
@@ -148,7 +148,7 @@ export default function AddressForm({ onSubmit }) {
 
       <Part n={3} title="Validate on submit">
         <p>
-          Never trust a submitted address, even from your own form — drafts go stale and ids get
+          Never trust a submitted address, even from your own form drafts go stale and ids get
           edited. <code>validateHierarchy()</code> accepts the ids straight from the form state
           (or names, or NISR codes) and tells you exactly which level broke:
         </p>
@@ -210,7 +210,7 @@ export default function VillageSearch({ onPick }) {
 
       <Part n={5} title="TypeScript">
         <p>
-          Type definitions ship with the package — no <code>@types/…</code> install. Every
+          Type definitions ship with the package no <code>@types/…</code> install. Every
           function, node shape and option is typed:
         </p>
         <CodeBlock
@@ -240,7 +240,7 @@ function label(level: Level): string {
 
       <Part n={6} title="Serve it over HTTP">
         <p>
-          To keep the dataset off your client bundle, expose it from your own Express app — every
+          To keep the dataset off your client bundle, expose it from your own Express app every
           function is synchronous, so handlers stay one-liners. Strip child collections from list
           responses, exactly like the Python integrations do:
         </p>
@@ -351,7 +351,7 @@ assert get_districts_by_province_id("province-nope") is None`}
         <Callout kind="note">
           <p>
             The Python package covers traversal and metadata today. Fuzzy search, code lookups
-            and hierarchy validation currently ship in the JavaScript package — if your backend
+            and hierarchy validation currently ship in the JavaScript package if your backend
             needs them, front the JS Express server or keep validation in the client.
           </p>
         </Callout>
@@ -399,7 +399,7 @@ $ curl -s -o /dev/null -w "%{http_code}" localhost:8000/api/rwanda/provinces/nop
         />
         <Callout kind="note">
           <p>
-            List responses deliberately omit child collections — a full province subtree is
+            List responses deliberately omit child collections a full province subtree is
             megabytes of JSON, while an address picker only ever needs one level at a time.
             Because it is a normal APIRouter, the endpoints appear in your OpenAPI docs at{" "}
             <code>/docs</code> automatically.
@@ -409,7 +409,7 @@ $ curl -s -o /dev/null -w "%{http_code}" localhost:8000/api/rwanda/provinces/nop
 
       <Part n={4} title="Django: one include()">
         <p>
-          The Django integration is a plain urlconf — no app to register, no models, no
+          The Django integration is a plain urlconf no app to register, no models, no
           migrations, nothing in <code>INSTALLED_APPS</code>:
         </p>
         <CodeBlock
@@ -432,7 +432,7 @@ urlpatterns = [
 
       <Part n={5} title="Feed your frontend">
         <p>
-          With either framework serving the endpoints, a frontend fetches one level at a time —
+          With either framework serving the endpoints, a frontend fetches one level at a time
           the client bundle stays dataset-free:
         </p>
         <CodeBlock
@@ -492,7 +492,7 @@ function JavaGuide() {
         <Callout kind="pitfall">
           <p>
             The <code>&lt;id&gt;github&lt;/id&gt;</code> here must match the repository id in
-            your pom exactly — a mismatch produces a 401 that looks like a bad token.
+            your pom exactly a mismatch produces a 401 that looks like a bad token.
           </p>
         </Callout>
       </Part>
@@ -539,7 +539,7 @@ dependencies {
       <Part n={3} title="Load once, traverse anywhere">
         <p>
           <code>loadDefault()</code> reads the dataset bundled inside the JAR (Jackson does the
-          parsing — it is the package's only dependency). Load it once at startup and share the
+          parsing it is the package's only dependency). Load it once at startup and share the
           instance; after loading, reads are lock-free:
         </p>
         <CodeBlock
@@ -581,7 +581,7 @@ public class RwandaLookup {
           <p>
             Building a REST API in Spring? Return the nodes minus their child collections for
             list endpoints (a <code>record Slim(String id, String name)</code> projection is
-            enough) — the same convention the JS and Python servers use.
+            enough) the same convention the JS and Python servers use.
           </p>
         </Callout>
       </Part>
@@ -624,7 +624,7 @@ function DartGuide() {
         <p>
           The dataset ships as a Flutter asset inside the package, so{" "}
           <code>RwandaAdminHierarchy.load()</code> is async (it reads from the asset bundle) but
-          needs no network. Load it once — at startup or behind a{" "}
+          needs no network. Load it once at startup or behind a{" "}
           <code>FutureBuilder</code> — and pass the instance down:
         </p>
         <CodeBlock
@@ -703,7 +703,7 @@ class _AddressFormState extends State<AddressForm> {
 
       <Part n={4} title="NISR codes and offline use">
         <p>
-          Village ids embed the official 8-digit NISR code, and the model exposes it directly —
+          Village ids embed the official 8-digit NISR code, and the model exposes it directly
           useful when submitting to government or telecom systems:
         </p>
         <CodeBlock
@@ -717,7 +717,7 @@ for (final v in villages ?? <Village>[]) {
         <Callout kind="note">
           <p>
             Because the dataset is a bundled asset, everything on this page works with airplane
-            mode on — worth knowing for field-work apps that register locations in rural areas.
+            mode on worth knowing for field-work apps that register locations in rural areas.
           </p>
         </Callout>
       </Part>
@@ -743,7 +743,7 @@ export default function Guides() {
         <p className="eyebrow">Integration guides</p>
         <h2>Wire it into your project, end to end</h2>
         <p className="section-lead">
-          Not overviews — each guide takes one stack from installation to a working, validated
+          Not overviews each guide takes one stack from installation to a working, validated
           address flow, with the sharp edges called out. Your choice here follows you across the
           page, including in the live demo.
         </p>
