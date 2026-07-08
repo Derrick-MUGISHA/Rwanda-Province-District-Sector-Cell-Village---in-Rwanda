@@ -9,6 +9,12 @@ Cell › Village — bundled as a Flutter package. Same dataset as the
 - Sourced from the official NISR "List of Villages" (snapshot in `dataVersion`)
 - Data licensed CC BY 4.0, code ISC
 
+## Installation
+
+```bash
+flutter pub add rwanda_admin
+```
+
 ## Usage
 
 ```dart
@@ -27,8 +33,9 @@ The dataset JSON in `lib/src/` is generated — do not edit it by hand. It is
 kept in sync with the canonical `data/rwanda-administrative.json` by
 `npm run sync:data` in the repository root.
 
-## Status
+## Releasing
 
-This package is not yet published to pub.dev and has not been built against a
-local Flutter SDK; treat it as a starting point and run
-`flutter pub get && flutter test` before publishing.
+Published to [pub.dev](https://pub.dev/packages/rwanda_admin) by the manual
+"Release Packages" GitHub Actions workflow, which injects the release version
+into `pubspec.yaml` (the committed `0.0.0` is a placeholder — never bump it by
+hand). Add a matching entry to `CHANGELOG.md` before releasing.
