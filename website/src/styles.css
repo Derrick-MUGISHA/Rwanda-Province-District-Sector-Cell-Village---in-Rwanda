@@ -270,6 +270,7 @@ code {
 
 .hero-install {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 1.2rem;
   flex-wrap: wrap;
