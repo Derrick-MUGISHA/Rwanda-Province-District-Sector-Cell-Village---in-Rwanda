@@ -2,7 +2,9 @@ name: rwanda_admin
 description: >-
   Complete Rwanda administrative hierarchy dataset (Province > District >
   Sector > Cell > Village) with NISR codes, bundled as a Flutter package.
-version: 1.1.0
+# Placeholder — the Release Packages workflow injects the real version,
+# same as python/pyproject.toml. Never bump this by hand.
+version: 0.0.0
 repository: https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda
 issue_tracker: https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda/issues
 

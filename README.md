@@ -429,7 +429,7 @@ GitHub Actions workflows are included:
   - Builds all package targets
   - Runs dependency audits (`npm audit`, `pip-audit`)
 - `.github/workflows/release-packages.yml`
-  - Manual release pipeline for npm, PyPI, and Maven
+  - Manual release pipeline for npm, PyPI, Maven, and pub.dev
   - Creates git tag and GitHub Release automatically after publish
 
 ## Quick Usage Examples
@@ -490,7 +490,8 @@ final rwanda = await RwandaAdminHierarchy.load();
 final districts = rwanda.districtsByProvinceId('province-umujyi-wa-kigali');
 ```
 
-It is not yet published to pub.dev; see `dart/README.md`.
+Install it from [pub.dev](https://pub.dev/packages/rwanda_admin) with
+`flutter pub add rwanda_admin`; see `dart/README.md` for details.
 
 ## Data and Logic Separation
 
