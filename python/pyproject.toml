@@ -4,7 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rwanda-admin"
-version = "1.4.0"
+# Placeholder — the Release Packages workflow injects the real version at publish time.
+version = "0.0.0"
 description = "Rwanda administrative hierarchy dataset and query helpers."
 readme = "README.md"
 requires-python = ">=3.9"

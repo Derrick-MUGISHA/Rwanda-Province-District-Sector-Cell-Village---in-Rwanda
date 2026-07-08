@@ -126,16 +126,13 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: python -m pip install --upgrade build twine
+      # Inject the release version like the npm and Maven jobs do — the
+      # version in python/pyproject.toml is a placeholder and never needs
+      # a manual bump.
+      - name: Set version from workflow input
+        run: sed -i "s/^version = \".*\"/version = \"$RELEASE_VERSION\"/" python/pyproject.toml
       - run: python -m build python
       - run: python -m twine check python/dist/*
-      # The version uploaded to PyPI comes from python/pyproject.toml — keep it
-      # in sync with the workflow's version input.
-      - name: Check pyproject version matches release version
-        run: |
-          grep -q '^version = "${{ inputs.version }}"' python/pyproject.toml || {
-            echo "python/pyproject.toml version does not match ${{ inputs.version }} — bump it and re-run."
-            exit 1
-          }
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: python/dist/
