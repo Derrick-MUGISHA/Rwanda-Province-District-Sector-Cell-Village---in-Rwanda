@@ -82,7 +82,7 @@ export default function RegistryStats() {
 
   return (
     <section className="mx-auto max-w-272 px-6 pb-16" aria-label="Live registry statistics">
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4 mb-5">
         <Tile
           href={`https://github.com/${REPO}`}
           label="GitHub"
@@ -108,7 +108,7 @@ export default function RegistryStats() {
           sub="on GitHub Packages"
         />
       </div>
-      <p className="m-0 mt-2 text-[0.78rem] text-mistdim">
+      <p className="m-0 mt-4 text-[0.78rem] text-mistdim">
         Fetched live from GitHub, npm and PyPI as you loaded this page.
       </p>
     </section>

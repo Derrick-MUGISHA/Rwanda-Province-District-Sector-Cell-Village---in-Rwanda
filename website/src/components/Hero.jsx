@@ -25,8 +25,8 @@ export default function Hero() {
         decoded from one number.
       </h1>
       <p className="hero-lead">
-        The complete administrative hierarchy of Rwanda — province, district, sector, cell,
-        village — with official NISR codes, packaged for JavaScript, Python, Java and Flutter.
+        The complete administrative hierarchy of Rwanda province, district, sector, cell,
+        village with official NISR codes, packaged for JavaScript, Python, Java and Flutter.
         No API keys, no network calls: the dataset ships inside the package.
       </p>
 
@@ -66,7 +66,7 @@ export default function Hero() {
           ))}
         </ol>
         <figcaption className="anatomy-caption">
-          <code>getPath("{EXAMPLE_VILLAGE}")</code> — resolved in your browser by the package
+          <code>getPath("{EXAMPLE_VILLAGE}")</code> resolved in your browser by the package
           itself. Hover a level to see which digits encode it.
         </figcaption>
       </figure>
@@ -76,7 +76,7 @@ export default function Hero() {
         <a className="button" href="#get-started">
           Get started
         </a>
-        <span className="hero-registries">also on PyPI · Maven</span>
+        {/* <span className="hero-registries">also on PyPI · Maven</span> */}
       </div>
     </section>
   );
