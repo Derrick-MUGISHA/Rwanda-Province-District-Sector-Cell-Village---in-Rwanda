@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { getPath } from "rwanda-admin";
-import { CopyCommand } from "./CodeBlock.jsx";
+import { PmCommand } from "./CodeBlock.jsx";
 import { LEVELS } from "../levels.js";
 
 const EXAMPLE_VILLAGE = "village-11010103";
@@ -72,11 +72,11 @@ export default function Hero() {
       </figure>
 
       <div className="hero-install">
-        <CopyCommand command="npm install rwanda-admin" />
+        <PmCommand />
         <a className="button" href="#get-started">
           Get started
         </a>
-        <span className="hero-registries">also on PyPI · Maven · pub</span>
+        <span className="hero-registries">also on PyPI · Maven</span>
       </div>
     </section>
   );

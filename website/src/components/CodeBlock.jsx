@@ -49,6 +49,53 @@ export function CopyCommand({ command }) {
   );
 }
 
+const PM_COMMANDS = {
+  npm: "npm install rwanda-admin",
+  yarn: "yarn add rwanda-admin",
+  pnpm: "pnpm add rwanda-admin",
+};
+
+/** The JS install command with an npm/yarn/pnpm switcher — all three clients
+ * install the same package from the npm registry. */
+export function PmCommand() {
+  const [pm, setPm] = useState(() => {
+    try {
+      const saved = localStorage.getItem("preferred-pm");
+      return PM_COMMANDS[saved] ? saved : "npm";
+    } catch {
+      return "npm";
+    }
+  });
+  const pick = (id) => {
+    setPm(id);
+    try {
+      localStorage.setItem("preferred-pm", id);
+    } catch {
+      // Private browsing — the preference just won't persist.
+    }
+  };
+  return (
+    <span className="copy-command copy-command--pm">
+      <span className="pm-switch" role="tablist" aria-label="Package manager">
+        {Object.keys(PM_COMMANDS).map((id) => (
+          <button
+            key={id}
+            type="button"
+            role="tab"
+            aria-selected={pm === id}
+            className={pm === id ? "pm-tab pm-tab--on" : "pm-tab"}
+            onClick={() => pick(id)}
+          >
+            {id}
+          </button>
+        ))}
+      </span>
+      <code>{PM_COMMANDS[pm]}</code>
+      <CopyButton text={PM_COMMANDS[pm]} />
+    </span>
+  );
+}
+
 /** A titled, syntax-highlighted, copyable code block. */
 export default function CodeBlock({ language, filename, code, compact = false }) {
   const grammar = Prism.languages[language];

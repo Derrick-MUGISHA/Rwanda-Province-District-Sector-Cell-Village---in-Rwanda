@@ -23,7 +23,13 @@ this dataset trustworthy. See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ```bash
 npm install rwanda-admin
+# or
+yarn add rwanda-admin
+# or
+pnpm add rwanda-admin
 ```
+
+All three commands install the same package from the npm registry.
 
 The published package is a **zero-dependency** data library with bundled TypeScript
 type definitions. The Express API server described below is a development/deployment

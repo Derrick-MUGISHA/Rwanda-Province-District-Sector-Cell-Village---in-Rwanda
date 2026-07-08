@@ -288,6 +288,40 @@ code {
   color: var(--mist);
 }
 
+.copy-command--pm {
+  gap: 0.7rem;
+}
+
+.pm-switch {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--hill-line);
+  border-radius: 5px;
+}
+
+.pm-tab {
+  padding: 0.22rem 0.6rem;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--mist);
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pm-tab:hover {
+  color: var(--sun);
+}
+
+.pm-tab--on,
+.pm-tab--on:hover {
+  background: var(--sun);
+  color: var(--ink-tea);
+}
+
 .copy-button {
   padding: 0.28rem 0.75rem;
   font-family: var(--font-body);

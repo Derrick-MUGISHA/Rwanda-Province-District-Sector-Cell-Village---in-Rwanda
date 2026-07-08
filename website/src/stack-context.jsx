@@ -12,7 +12,7 @@ export const STACKS = [
 export const INSTALL_COMMANDS = {
   js: "npm install rwanda-admin",
   python: 'pip install "rwanda-admin[fastapi]"',
-  java: "io.github.derickmugisha:rwanda-admin:1.3.0",
+  java: "io.github.derickmugisha:rwanda-admin:1.4.0",
   dart: "flutter pub add rwanda_admin --git-url=https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda.git --git-path=dart",
 };
 

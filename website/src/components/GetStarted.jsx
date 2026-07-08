@@ -1,5 +1,5 @@
 import { getProvinces, validateHierarchy } from "rwanda-admin";
-import CodeBlock, { CopyCommand } from "./CodeBlock.jsx";
+import CodeBlock, { PmCommand } from "./CodeBlock.jsx";
 
 function Step({ n, title, children }) {
   return (
@@ -45,11 +45,12 @@ export default function GetStarted() {
             keys and no network calls.
           </p>
           <p>
-            <CopyCommand command="npm install rwanda-admin" />
+            <PmCommand />
           </p>
           <p className="step-aside">
-            Using Python, Java or Flutter instead? The same steps apply — grab your install
-            command from the <a href="#stacks">integration guides</a> below.
+            npm, yarn and pnpm all install the same package from the npm registry. Using
+            Python, Java or Flutter instead? The same steps apply — grab your install command
+            from the <a href="#stacks">integration guides</a> below.
           </p>
         </Step>
 
