@@ -59,7 +59,7 @@ function JsGuide() {
 
       <Part n={1} title="Install">
         <p>
-          <CopyCommand command="npm install @derrick63/rwanda-admin-hierarchy" />
+          <CopyCommand command="npm install rwanda-admin" />
         </p>
         <p>
           The package is CommonJS with zero runtime dependencies and works unchanged in Node and
@@ -84,7 +84,7 @@ import {
   getSectorsByDistrictId,
   getCellsBySectorId,
   getVillagesByCellId,
-} from "@derrick63/rwanda-admin-hierarchy";
+} from "rwanda-admin";
 
 const LEVELS = ["province", "district", "sector", "cell", "village"];
 const CHILDREN_OF = {
@@ -155,7 +155,7 @@ export default function AddressForm({ onSubmit }) {
         <CodeBlock
           language="javascript"
           filename="submit.js"
-          code={`import { validateHierarchy } from "@derrick63/rwanda-admin-hierarchy";
+          code={`import { validateHierarchy } from "rwanda-admin";
 
 function handleSubmit(address) {
   const result = validateHierarchy(address);
@@ -182,7 +182,7 @@ function handleSubmit(address) {
           language="jsx"
           filename="VillageSearch.jsx"
           code={`import { useDeferredValue, useMemo, useState } from "react";
-import { search } from "@derrick63/rwanda-admin-hierarchy";
+import { search } from "rwanda-admin";
 
 export default function VillageSearch({ onPick }) {
   const [query, setQuery] = useState("");
@@ -224,7 +224,7 @@ export default function VillageSearch({ onPick }) {
   type SearchResult,
   type HierarchyPath,
   type Level,
-} from "@derrick63/rwanda-admin-hierarchy";
+} from "rwanda-admin";
 
 const provinces: Province[] = getProvinces();
 const hits: SearchResult[] = search("gitega", { levels: ["sector"], limit: 5 });
@@ -253,7 +253,7 @@ const {
   getDistrictsByProvinceId,
   search,
   getPath,
-} = require("@derrick63/rwanda-admin-hierarchy");
+} = require("rwanda-admin");
 
 const slim = ({ districts, sectors, cells, villages, ...node }) => node;
 const app = express();
@@ -311,13 +311,13 @@ function PythonGuide() {
           framework you use:
         </p>
         <p>
-          <CopyCommand command="pip install rwanda-admin-hierarchy" />
+          <CopyCommand command="pip install rwanda-admin" />
         </p>
         <p>
-          <CopyCommand command='pip install "rwanda-admin-hierarchy[fastapi]"' />
+          <CopyCommand command='pip install "rwanda-admin[fastapi]"' />
         </p>
         <p>
-          <CopyCommand command='pip install "rwanda-admin-hierarchy[django]"' />
+          <CopyCommand command='pip install "rwanda-admin[django]"' />
         </p>
       </Part>
 
@@ -330,7 +330,7 @@ function PythonGuide() {
         <CodeBlock
           language="python"
           filename="traverse.py"
-          code={`from rwanda_admin_hierarchy import (
+          code={`from rwanda_admin import (
     get_data_meta,
     get_provinces,
     get_districts_by_province_id,
@@ -365,7 +365,7 @@ assert get_districts_by_province_id("province-nope") is None`}
           language="python"
           filename="main.py"
           code={`from fastapi import FastAPI
-from rwanda_admin_hierarchy.integrations.fastapi import create_router
+from rwanda_admin.integrations.fastapi import create_router
 
 app = FastAPI(title="My app")
 app.include_router(create_router(), prefix="/api/rwanda", tags=["rwanda"])`}
@@ -419,7 +419,7 @@ $ curl -s -o /dev/null -w "%{http_code}" localhost:8000/api/rwanda/provinces/nop
 
 urlpatterns = [
     # ... your other routes
-    path("api/rwanda/", include("rwanda_admin_hierarchy.integrations.django")),
+    path("api/rwanda/", include("rwanda_admin.integrations.django")),
 ]`}
         />
         <p>
@@ -511,7 +511,7 @@ function JavaGuide() {
 <dependencies>
   <dependency>
     <groupId>io.github.derickmugisha</groupId>
-    <artifactId>rwanda-admin-hierarchy</artifactId>
+    <artifactId>rwanda-admin</artifactId>
     <version>1.3.0</version>
   </dependency>
 </dependencies>`}
@@ -531,7 +531,7 @@ function JavaGuide() {
 }
 
 dependencies {
-    implementation "io.github.derickmugisha:rwanda-admin-hierarchy:1.3.0"
+    implementation "io.github.derickmugisha:rwanda-admin:1.3.0"
 }`}
         />
       </Part>
@@ -609,14 +609,14 @@ function DartGuide() {
           language="yaml"
           filename="pubspec.yaml"
           code={`dependencies:
-  rwanda_admin_hierarchy:
+  rwanda_admin:
     git:
       url: https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda.git
       path: dart`}
         />
         <p>Or from the command line:</p>
         <p>
-          <CopyCommand command="flutter pub add rwanda_admin_hierarchy --git-url=https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda.git --git-path=dart" />
+          <CopyCommand command="flutter pub add rwanda_admin --git-url=https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda.git --git-path=dart" />
         </p>
       </Part>
 
@@ -630,7 +630,7 @@ function DartGuide() {
         <CodeBlock
           language="dart"
           filename="load.dart"
-          code={`import 'package:rwanda_admin_hierarchy/rwanda_admin_hierarchy.dart';
+          code={`import 'package:rwanda_admin/rwanda_admin.dart';
 
 late final RwandaAdminHierarchy rwanda;
 

@@ -30,11 +30,11 @@ function useRegistryStats() {
     countViaLinkHeader(`${REPO_API}/contributors?per_page=1&anon=1`)
       .then((n) => n != null && merge({ contributors: n }))
       .catch(() => {});
-    fetch("https://api.npmjs.org/downloads/point/last-month/@derrick63/rwanda-admin-hierarchy")
+    fetch("https://api.npmjs.org/downloads/point/last-month/rwanda-admin")
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => d && merge({ npm: d.downloads }))
       .catch(() => {});
-    fetch("https://pypistats.org/api/packages/rwanda-admin-hierarchy/recent")
+    fetch("https://pypistats.org/api/packages/rwanda-admin/recent")
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => d?.data && merge({ pypi: d.data.last_month }))
       .catch(() => {});
@@ -90,13 +90,13 @@ export default function RegistryStats() {
           sub={githubSub || "stars · commits · contributors"}
         />
         <Tile
-          href="https://www.npmjs.com/package/@derrick63/rwanda-admin-hierarchy"
+          href="https://www.npmjs.com/package/rwanda-admin"
           label="npm · JavaScript"
           value={fmt(stats.npm)}
           sub="downloads, last month"
         />
         <Tile
-          href="https://pypi.org/project/rwanda-admin-hierarchy/"
+          href="https://pypi.org/project/rwanda-admin/"
           label="PyPI · Python"
           value={fmt(stats.pypi)}
           sub="downloads, last month"

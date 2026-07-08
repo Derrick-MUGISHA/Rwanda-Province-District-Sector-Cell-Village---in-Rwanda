@@ -239,20 +239,20 @@
       <button role="tab" aria-selected="false" data-tab="data">Raw data</button>
     </div>
     <pre id="pane-node" data-pane="node"><code><span class="c"># zero runtime dependencies, TypeScript types included</span>
-npm install @derrick63/rwanda-admin-hierarchy
+npm install rwanda-admin
 
-<span class="g">const</span> { search, getPath, isValidHierarchy } = <span class="g">require</span>(<span class="y">"@derrick63/rwanda-admin-hierarchy"</span>);
+<span class="g">const</span> { search, getPath, isValidHierarchy } = <span class="g">require</span>(<span class="y">"rwanda-admin"</span>);
 
 search(<span class="y">"Iterambere"</span>);                  <span class="c">// name search with typo tolerance</span>
 getPath(<span class="y">"village-11010103"</span>);           <span class="c">// full chain from any NISR code or id</span>
 isValidHierarchy({ province: <span class="y">"RW-01"</span>, district: <span class="y">"Nyarugenge"</span> }); <span class="c">// true</span></code></pre>
-    <pre id="pane-python" data-pane="python" hidden><code><span class="c"># pip install rwanda-admin-hierarchy</span>
-<span class="g">import</span> rwanda_admin_hierarchy <span class="g">as</span> rw
+    <pre id="pane-python" data-pane="python" hidden><code><span class="c"># pip install rwanda-admin</span>
+<span class="g">import</span> rwanda_admin <span class="g">as</span> rw
 
 rw.get_provinces()
 rw.get_villages_by_cell_id(<span class="y">"province-umujyi-wa-kigali-district-nyarugenge-sector-gitega-cell-akabahizi"</span>)
 rw.get_data_meta()[<span class="y">"counts"</span>]  <span class="c"># {'provinces': 5, ... 'villages': 14816}</span></code></pre>
-    <pre id="pane-java" data-pane="java" hidden><code><span class="c">// io.github.derickmugisha : rwanda-admin-hierarchy (GitHub Packages)</span>
+    <pre id="pane-java" data-pane="java" hidden><code><span class="c">// io.github.derickmugisha : rwanda-admin (GitHub Packages)</span>
 RwandaHierarchyService service = RwandaHierarchyService.loadDefault();
 List&lt;Province&gt; provinces = service.getProvinces();
 service.getDistrictsByProvinceId(<span class="y">"province-umujyi-wa-kigali"</span>);</code></pre>
@@ -283,7 +283,7 @@ rwanda-administrative.json</code></pre>
     <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> ·
     code under ISC ·
     <a href="https://github.com/Derrick-MUGISHA/Rwanda-Province-District-Sector-Cell-Village---in-Rwanda">GitHub</a> ·
-    <a href="https://www.npmjs.com/package/@derrick63/rwanda-admin-hierarchy">npm</a>
+    <a href="https://www.npmjs.com/package/rwanda-admin">npm</a>
   </div>
 </footer>
 
@@ -465,7 +465,7 @@ rwanda-administrative.json</code></pre>
     })
     .catch(() => {
       statusEl.textContent =
-        "Couldn't load the dataset (offline?). Install the package instead: npm install @derrick63/rwanda-admin-hierarchy";
+        "Couldn't load the dataset (offline?). Install the package instead: npm install rwanda-admin";
     });
 })();
 </script>

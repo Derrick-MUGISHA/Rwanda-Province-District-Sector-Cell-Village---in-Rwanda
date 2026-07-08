@@ -8,7 +8,7 @@ try {
 } catch (error) {
   console.error(
     "The API server requires dev dependencies. Run `npm install` inside the repository.\n" +
-      "The published package's lookup API (require(\"@derrick63/rwanda-admin-hierarchy\")) has no dependencies.",
+      "The published package's lookup API (require(\"rwanda-admin\")) has no dependencies.",
   );
   throw error;
 }

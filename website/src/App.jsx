@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getDataMeta } from "@derrick63/rwanda-admin-hierarchy";
+import { getDataMeta } from "rwanda-admin";
 import { Menu, X } from "lucide-react";
 import Hero from "./components/Hero.jsx";
 import Cascade from "./components/Cascade.jsx";
@@ -83,7 +83,7 @@ function Navbar() {
         <a href="#top" className="flex items-center gap-3 no-underline leading-tight">
           <Mark className="h-9 w-9" />
           <span className="flex flex-col">
-            <span className="font-mono font-semibold text-mist">rwanda-admin-hierarchy</span>
+            <span className="font-mono font-semibold text-mist">rwanda-admin</span>
             <span className="text-[0.72rem] tracking-wide text-mistdim">by Derrick MUGISHA</span>
           </span>
         </a>
@@ -157,7 +157,7 @@ function Footer({ meta }) {
           <div className="flex items-center gap-3">
             <Mark className="h-10 w-10" />
             <div className="leading-tight">
-              <p className="m-0 font-mono font-semibold">rwanda-admin-hierarchy</p>
+              <p className="m-0 font-mono font-semibold">rwanda-admin</p>
               <p className="m-0 text-sm text-mistdim">
                 by <a href="https://github.com/Derrick-MUGISHA">Derrick MUGISHA</a>
               </p>
@@ -171,8 +171,8 @@ function Footer({ meta }) {
         <nav aria-label="Packages">
           <h4 className="text-mist">Packages</h4>
           <ul className="m-0 list-none space-y-2 p-0 text-sm text-mistdim">
-            <li><a href="https://www.npmjs.com/package/@derrick63/rwanda-admin-hierarchy">npm — JavaScript</a></li>
-            <li><a href="https://pypi.org/project/rwanda-admin-hierarchy/">PyPI — Python</a></li>
+            <li><a href="https://www.npmjs.com/package/rwanda-admin">npm — JavaScript</a></li>
+            <li><a href="https://pypi.org/project/rwanda-admin/">PyPI — Python</a></li>
             <li><a href={`${REPO_URL}/packages`}>GitHub Packages — Java</a></li>
             <li><a href={`${REPO_URL}/tree/main/dart`}>pub via git — Dart / Flutter</a></li>
           </ul>

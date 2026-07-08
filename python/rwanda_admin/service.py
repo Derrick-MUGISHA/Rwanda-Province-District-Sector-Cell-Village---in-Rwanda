@@ -12,7 +12,7 @@ def load_dataset() -> dict[str, Any]:
   if _CACHE is not None:
     return _CACHE
 
-  dataset_text = resources.files("rwanda_admin_hierarchy").joinpath(
+  dataset_text = resources.files("rwanda_admin").joinpath(
     "rwanda_administrative.json"
   ).read_text(encoding="utf-8")
   _CACHE = json.loads(dataset_text)

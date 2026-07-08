@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rwanda_admin_hierarchy/rwanda_admin_hierarchy.dart';
+import 'package:rwanda_admin/rwanda_admin.dart';
 
 void main() {
   final text = File('lib/src/rwanda_administrative.json').readAsStringSync();

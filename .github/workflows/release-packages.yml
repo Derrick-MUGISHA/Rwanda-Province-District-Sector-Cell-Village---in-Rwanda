@@ -99,7 +99,7 @@ jobs:
           node -e "
             const fs = require('fs');
             const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-            pkg.name = '@derrick-mugisha/rwanda-admin-hierarchy';
+            pkg.name = '@derrick-mugisha/rwanda-admin';
             fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
           "
       # Make full-workflow re-runs safe after a partial failure: an
@@ -167,11 +167,11 @@ jobs:
       - name: Deploy to GitHub Packages (skip if version already exists)
         run: |
           set -o pipefail
-          versions_url="https://api.github.com/users/${{ github.repository_owner }}/packages/maven/io.github.derickmugisha.rwanda-admin-hierarchy/versions?per_page=100"
+          versions_url="https://api.github.com/users/${{ github.repository_owner }}/packages/maven/io.github.derickmugisha.rwanda-admin/versions?per_page=100"
           published="$(curl -sS -H "Authorization: Bearer $GITHUB_TOKEN" "$versions_url" | jq -r 'if type == "array" then .[].name else empty end' || true)"
           echo "Published versions:" $published
           if printf '%s\n' "$published" | grep -Fqx "$RELEASE_VERSION"; then
-            echo "rwanda-admin-hierarchy $RELEASE_VERSION is already on GitHub Packages — building without deploy."
+            echo "rwanda-admin $RELEASE_VERSION is already on GitHub Packages — building without deploy."
             mvn -f java-mvn/pom.xml -B -Drevision="$RELEASE_VERSION" clean verify
             exit 0
           fi

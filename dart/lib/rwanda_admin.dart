@@ -6,7 +6,7 @@
 /// final provinces = rwanda.provinces;
 /// final districts = rwanda.districtsByProvinceId(provinces.first.id);
 /// ```
-library rwanda_admin_hierarchy;
+library rwanda_admin;
 
 import 'dart:convert';
 
@@ -142,7 +142,7 @@ class RwandaAdminHierarchy {
   /// Loads the dataset bundled with this package (Flutter asset bundle).
   static Future<RwandaAdminHierarchy> load() async {
     final text = await rootBundle.loadString(
-        'packages/rwanda_admin_hierarchy/src/rwanda_administrative.json');
+        'packages/rwanda_admin/src/rwanda_administrative.json');
     return RwandaAdminHierarchy.fromJsonString(text);
   }
 

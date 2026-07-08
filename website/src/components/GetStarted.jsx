@@ -1,4 +1,4 @@
-import { getProvinces, validateHierarchy } from "@derrick63/rwanda-admin-hierarchy";
+import { getProvinces, validateHierarchy } from "rwanda-admin";
 import CodeBlock, { CopyCommand } from "./CodeBlock.jsx";
 
 function Step({ n, title, children }) {
@@ -45,7 +45,7 @@ export default function GetStarted() {
             keys and no network calls.
           </p>
           <p>
-            <CopyCommand command="npm install @derrick63/rwanda-admin-hierarchy" />
+            <CopyCommand command="npm install rwanda-admin" />
           </p>
           <p className="step-aside">
             Using Python, Java or Flutter instead? The same steps apply — grab your install
@@ -61,7 +61,7 @@ export default function GetStarted() {
           <CodeBlock
             language="javascript"
             filename="first-lookup.js"
-            code={`import { getProvinces } from "@derrick63/rwanda-admin-hierarchy";
+            code={`import { getProvinces } from "rwanda-admin";
 
 const provinces = getProvinces();
 console.log(provinces.length); // 5`}
@@ -82,7 +82,7 @@ console.log(provinces.length); // 5`}
   getSectorsByDistrictId,
   getCellsBySectorId,
   getVillagesByCellId,
-} from "@derrick63/rwanda-admin-hierarchy";
+} from "rwanda-admin";
 
 const districts = getDistrictsByProvinceId("province-umujyi-wa-kigali");
 const sectors = getSectorsByDistrictId(districts[0].id);
@@ -107,7 +107,7 @@ const villages = getVillagesByCellId(cells[0].id);
           <CodeBlock
             language="javascript"
             filename="validate.js"
-            code={`import { validateHierarchy } from "@derrick63/rwanda-admin-hierarchy";
+            code={`import { validateHierarchy } from "rwanda-admin";
 
 validateHierarchy({
   province: "Kigali",
@@ -133,7 +133,7 @@ validateHierarchy({
           <CodeBlock
             language="javascript"
             filename="advanced.js"
-            code={`import { search, getByCode, getPath, resolveId } from "@derrick63/rwanda-admin-hierarchy";
+            code={`import { search, getByCode, getPath, resolveId } from "rwanda-admin";
 
 // Typo- and diacritic-tolerant search across all 17,409 places
 search("nyarugengye", { levels: ["district"], limit: 3 });

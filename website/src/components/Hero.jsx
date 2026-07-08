@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getPath } from "@derrick63/rwanda-admin-hierarchy";
+import { getPath } from "rwanda-admin";
 import { CopyCommand } from "./CodeBlock.jsx";
 import { LEVELS } from "../levels.js";
 
@@ -72,7 +72,7 @@ export default function Hero() {
       </figure>
 
       <div className="hero-install">
-        <CopyCommand command="npm install @derrick63/rwanda-admin-hierarchy" />
+        <CopyCommand command="npm install rwanda-admin" />
         <a className="button" href="#get-started">
           Get started
         </a>

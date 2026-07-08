@@ -1,5 +1,5 @@
 {
-  "name": "@derrick63/rwanda-admin-hierarchy",
+  "name": "rwanda-admin",
   "version": "1.0.0",
   "description": "Complete Rwanda administrative hierarchy dataset (Province > District > Sector > Cell > Village) with a zero-dependency lookup API and an optional Express server.",
   "main": "src/index.js",

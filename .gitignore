@@ -9,3 +9,4 @@ python/build/
 python/*.egg-info/
 exports/
 __pycache__/
+dart/.dart_tool/

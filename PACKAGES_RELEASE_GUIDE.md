@@ -36,7 +36,7 @@ npm pack
 ```
 
 Output package:
-- `derrickmugisha-rwanda-admin-hierarchy-1.0.0.tgz`
+- `derrickmugisha-rwanda-admin-1.0.0.tgz`
 
 ### Publish to npm
 
@@ -57,7 +57,7 @@ mvn -f java-mvn/pom.xml clean package
 ```
 
 Output JAR:
-- `java-mvn/target/rwanda-admin-hierarchy-1.0.0.jar`
+- `java-mvn/target/rwanda-admin-1.0.0.jar`
 
 ### Install locally (for local app use)
 

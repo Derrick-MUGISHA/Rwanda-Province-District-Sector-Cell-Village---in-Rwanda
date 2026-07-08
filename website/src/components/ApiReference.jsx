@@ -1,4 +1,4 @@
-import { getPath, validateHierarchy } from "@derrick63/rwanda-admin-hierarchy";
+import { getPath, validateHierarchy } from "rwanda-admin";
 import CodeBlock from "./CodeBlock.jsx";
 
 const FUNCTION_GROUPS = [
