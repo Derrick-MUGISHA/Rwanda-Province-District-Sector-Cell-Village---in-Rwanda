@@ -28,7 +28,7 @@
   ],
   "scripts": {
     "build:data": "node scripts/build-json-from-pdf.js && npm run sync:data && npm run split:data",
-    "start": "node src/server.js",
+    "start": "node api.js && node src/server.js",
     "test": "node --test",
     "validate:data": "node scripts/validate-data.js && node scripts/sync-data.js --check",
     "sync:data": "node scripts/sync-data.js",
