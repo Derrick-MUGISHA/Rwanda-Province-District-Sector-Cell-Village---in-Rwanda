@@ -22,6 +22,11 @@ on:
         required: true
         default: true
         type: boolean
+      publish_dart:
+        description: "Publish Dart package"
+        required: true
+        default: true
+        type: boolean
 
 permissions:
   contents: write
@@ -182,9 +187,62 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  dart:
+    needs: validate-input
+    if: ${{ inputs.publish_dart }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      # Inject the release version like the npm, Python, and Maven jobs do —
+      # the version in dart/pubspec.yaml is a placeholder and never needs a
+      # manual bump.
+      - name: Set version from workflow input
+        run: |
+          sed -i "s/^version: .*/version: $RELEASE_VERSION/" dart/pubspec.yaml
+      - run: flutter pub get
+        working-directory: dart
+      - run: flutter test
+        working-directory: dart
+      # pub.dev has no long-lived API tokens: publishing uses the OAuth
+      # credentials from a local `dart pub login`, stored as a repo secret.
+      # Until that secret exists, build and test but skip the publish with a
+      # warning (same pattern as the Vercel website deploy).
+      - name: Check for pub.dev credentials
+        id: creds
+        run: |
+          if [ -z "$PUB_CREDENTIALS" ]; then
+            echo "::warning::Secret PUB_CREDENTIALS is not set — built and tested the Dart package but skipped the pub.dev publish. Run 'dart pub login' locally and save ~/.config/dart/pub-credentials.json as the PUB_CREDENTIALS repository secret."
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          PUB_CREDENTIALS: ${{ secrets.PUB_CREDENTIALS }}
+      # Make full-workflow re-runs safe after a partial failure: an
+      # already-published version is not an error. A 404 from the API means
+      # the package has never been published, which is fine (first release).
+      - name: Publish to pub.dev (skip if version already exists)
+        if: ${{ steps.creds.outputs.available == 'true' }}
+        working-directory: dart
+        run: |
+          mkdir -p ~/.config/dart
+          printf '%s' "$PUB_CREDENTIALS" > ~/.config/dart/pub-credentials.json
+          published="$(curl -sS https://pub.dev/api/packages/rwanda_admin | jq -r '.versions[].version' 2>/dev/null || true)"
+          if printf '%s\n' "$published" | grep -Fqx "$RELEASE_VERSION"; then
+            echo "rwanda_admin $RELEASE_VERSION is already on pub.dev — skipping publish."
+          else
+            flutter pub publish --force
+          fi
+        env:
+          PUB_CREDENTIALS: ${{ secrets.PUB_CREDENTIALS }}
+
   release:
-    needs: [validate-input, npm, npm-github, python, maven]
-    if: ${{ always() && needs.validate-input.result == 'success' && (needs.npm.result == 'success' || needs.npm.result == 'skipped') && (needs.npm-github.result == 'success' || needs.npm-github.result == 'skipped') && (needs.python.result == 'success' || needs.python.result == 'skipped') && (needs.maven.result == 'success' || needs.maven.result == 'skipped') }}
+    needs: [validate-input, npm, npm-github, python, maven, dart]
+    if: ${{ always() && needs.validate-input.result == 'success' && (needs.npm.result == 'success' || needs.npm.result == 'skipped') && (needs.npm-github.result == 'success' || needs.npm-github.result == 'skipped') && (needs.python.result == 'success' || needs.python.result == 'skipped') && (needs.maven.result == 'success' || needs.maven.result == 'skipped') && (needs.dart.result == 'success' || needs.dart.result == 'skipped') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
